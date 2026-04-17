@@ -1,0 +1,12 @@
+export const fetchCategoria = async () => {
+    const res = await fetch("http://localhost:3000/categoria", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    if (res.status !== 200 && res.status !== 201) {
+        throw new Error("Erro ao buscar categoria")
+    }
+    return await res.json()
+};
