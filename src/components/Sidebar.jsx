@@ -1,17 +1,10 @@
 import { useState } from "react";
-import { Home, Users, Settings, Menu, X } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Home, Users, Settings, Menu, X, PlusIcon } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
 
 export default function Sidebar() {
     const [open, setOpen] = useState(true);
-    const location = useLocation();
-
-    const menuItems = [
-        { name: "home", label: "Home", icon: <Home size={20} /> },
-        { name: "categoria-produto", label: "Categorias", icon: <Settings size={20} /> },
-        { name: "users", label: "Users", icon: <Users size={20} /> },
-        { name: "settings", label: "Settings", icon: <Settings size={20} /> },
-    ];
 
     return (
         <aside
@@ -25,26 +18,35 @@ export default function Sidebar() {
             >
                 {open ? <X /> : <Menu />}
             </button>
+            <nav className="flex flex-col gap-2">
+                <Button asChild variant="link" className={`text-zinc-400 hover:text-white justify-start w-full gap-3 ${!open ? "px-2 justify-center" : ""}`}>
+                    <Link to="/" className="flex items-center">
+                        <Home size={20} className="shrink-0" />
+                        {open && <span className="text-sm font-medium">Home</span>}
+                    </Link>
+                </Button>
 
-            {/* Menu */}
-            <ul className="space-y-4">
-                {menuItems.map((item, index) => {
-                    const isActive = location.pathname === `/${item.name}`;
+                <Button asChild variant="link" className={`text-zinc-400 hover:text-white justify-start w-full gap-3 ${!open ? "px-2 justify-center" : ""}`}>
+                    <Link to="/categoria-produto" className="flex items-center">
+                        <PlusIcon size={20} className="shrink-0" />
+                        {open && <span className="text-sm font-medium">Categorias</span>}
+                    </Link>
+                </Button>
 
-                    return (
-                        <li key={index}>
-                            <Link
-                                to={`/${item.name}`}
-                                className={`flex items-center gap-4 p-2 rounded-xl cursor-pointer transition ${isActive ? "bg-zinc-800" : "hover:bg-zinc-800"
-                                    }`}
-                            >
-                                {item.icon}
-                                {open && <span className="text-sm">{item.label}</span>}
-                            </Link>
-                        </li>
-                    );
-                })}
-            </ul>
+                <Button asChild variant="link" className={`text-zinc-400 hover:text-white justify-start w-full gap-3 ${!open ? "px-2 justify-center" : ""}`}>
+                    <Link to="/users" className="flex items-center">
+                        <Users size={20} className="shrink-0" />
+                        {open && <span className="text-sm font-medium">Usuários</span>}
+                    </Link>
+                </Button>
+
+                <Button asChild variant="link" className={`text-zinc-400 hover:text-white justify-start w-full gap-3 ${!open ? "px-2 justify-center" : ""}`}>
+                    <Link to="/settings" className="flex items-center">
+                        <Settings size={20} className="shrink-0" />
+                        {open && <span className="text-sm font-medium">Configurações</span>}
+                    </Link>
+                </Button>
+            </nav>
         </aside>
     );
 }

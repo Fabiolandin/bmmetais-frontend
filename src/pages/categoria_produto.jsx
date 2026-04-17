@@ -13,20 +13,25 @@ const CategoriaProduto = () => {
     }
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         getDados()
     }, [])
 
     return (
-        <div className="flex bg-gray-300">
+        <div className="flex">
             <Sidebar />
             <Card className=" shadow flex-1 mb-4 mt-4 mr-4 ml-4 rounded-xl">
                 <CardHeader className="flex">
                     <CardTitle>Categoria de produtos cadastradas</CardTitle>
-                    <Button className="ml-auto">Olá</Button>
+                    <Button variant="outline" className="ml-auto">Nova categoria</Button>
                 </CardHeader>
                 {listaCategoria.map((categoria) => (
                     <CardContent key={categoria.id}>
-                        <CardDescription>{categoria.nome}</CardDescription>
+                        <Card
+                            className="p-4 hover:bg-gray-100 shadow"
+                        >
+                            {categoria.nome}
+                        </Card>
                     </CardContent>
                 ))}
             </Card>
