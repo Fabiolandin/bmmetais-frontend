@@ -1,9 +1,10 @@
 import Sidebar from "@/components/Sidebar"
 import { Button } from "@/components/ui/button"
-import { createCategoria, fetchCategoria } from "@/fetchs/fetchCategoria"
+import { createCategoria, deleteCategoria, fetchCategoria } from "@/fetchs/fetchCategoria"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useState, useEffect } from "react"
 import DialogCategoriaProduto from "@/components/DialogCategoriaProduto"
+import { EyeIcon, Trash2Icon } from "lucide-react"
 
 const CategoriaProduto = () => {
     const [listaCategoria, setListaCategoria] = useState([])
@@ -24,6 +25,22 @@ const CategoriaProduto = () => {
         }
     }
 
+    const openDialogDetails = () => {
+        console.log('Função de open dialog')
+    }
+
+    const deleteCategoriaProduto = async (id) => {
+        try {
+            await deleteCategoria(id)
+            await getDados()
+            console.log("Categoria deletada com sucesso!")
+        } catch (error) {
+            console.error("Erro ao deletar categoria: ", error)
+            throw error
+        }
+    }
+
+
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         getDados()
@@ -42,9 +59,19 @@ const CategoriaProduto = () => {
                 {listaCategoria.map((categoria) => (
                     <CardContent key={categoria.id}>
                         <Card
-                            className="p-4 hover:bg-gray-100 shadow"
+                            className="p-4 hover:bg-gray-100 shadow flex-row"
                         >
                             {categoria.nome}
+                            <EyeIcon
+                                size={25}
+                                className="ml-auto text-gray-500"
+                                onClick={() => openDialogDetails()}
+                            />
+                            <Trash2Icon
+                                size={23}
+                                className="text-red-500"
+                                onClick={() => deleteCategoriaProduto(categoria.id)}
+                            />
                         </Card>
                     </CardContent>
                 ))}

@@ -24,3 +24,16 @@ export const createCategoria = async (nome: string) => {
     }
     return await res.json()
 };
+
+export const deleteCategoria = async (id: number) => {
+    const res = await fetch(`http://localhost:3000/categoria/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    if (res.status !== 200 && res.status !== 201) {
+        throw new Error("Erro ao deletar categoria")
+    }
+    return await res.json()
+};

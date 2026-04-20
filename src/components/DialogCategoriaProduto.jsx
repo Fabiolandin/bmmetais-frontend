@@ -5,20 +5,15 @@ import { useState } from "react"
 
 const DialogCategoriaProduto = ({ open, onOpenChange, onCreateCategoriaProduto }) => {
     const [nome, setNome] = useState("")
-    const [loading, setLoading] = useState(false)
 
     const handleSubmit = async () => {
         if (!nome.trim()) return
-
-        setLoading(true)
         try {
             await onCreateCategoriaProduto(nome)
             setNome("")
             onOpenChange(false)
         } catch (error) {
             console.log("Erro ao criar categoria de produto: ", error)
-        } finally {
-            setLoading(false)
         }
     }
 
@@ -45,7 +40,6 @@ const DialogCategoriaProduto = ({ open, onOpenChange, onCreateCategoriaProduto }
                                 placeholder="Digite o nome da categoria de produto"
                                 value={nome}
                                 onChange={(e) => setNome(e.target.value)}
-                                disabled={loading}
                             />
                         </div>
 
@@ -60,9 +54,9 @@ const DialogCategoriaProduto = ({ open, onOpenChange, onCreateCategoriaProduto }
                             <Button
                                 type="button"
                                 onClick={handleSubmit}
-                                disabled={loading || !nome.trim()}
+                                disabled={!nome.trim()}
                             >
-                                {loading ? "Cadastrando..." : "Cadastrar"}
+                                Cadastrar
                             </Button>
                         </DialogFooter>
                     </form>
