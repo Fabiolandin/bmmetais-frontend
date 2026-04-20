@@ -1,10 +1,11 @@
 import Sidebar from "@/components/Sidebar"
 import { Button } from "@/components/ui/button"
-import { createCategoria, deleteCategoria, fetchCategoria } from "@/fetchs/fetchCategoria"
+import { createCategoria, deleteCategoria, editarCategoria, fetchCategoria } from "@/fetchs/fetchCategoria"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useState, useEffect } from "react"
 import DialogCategoriaProduto from "@/components/DialogCategoriaProduto"
 import { EyeIcon, Trash2Icon } from "lucide-react"
+import DialogCategoriaProdutoDetails from "@/components/DialogCategoriaProdutoDetails"
 
 const CategoriaProduto = () => {
     const [listaCategoria, setListaCategoria] = useState([])
@@ -25,9 +26,17 @@ const CategoriaProduto = () => {
         }
     }
 
-    const openDialogDetails = () => {
-        console.log('Função de open dialog')
+    const editarCategoriaProduto = async (id, nome) => {
+        try {
+            await editarCategoria(id, nome)
+            console.log("Categoria editada com sucesso!")
+            await getDados()
+        } catch (error) {
+            console.error("Erro ao editar categoria: ", error)
+            throw error
+        }
     }
+
 
     const deleteCategoriaProduto = async (id) => {
         try {
@@ -46,7 +55,17 @@ const CategoriaProduto = () => {
         getDados()
     }, [])
 
+    //states para setar abrie e fechar de dialogs
     const [open, setOpen] = useState(false)
+    const [openDetails, setOpenDetails] = useState(false)
+
+    const [categoriaSelecionada, setCategoriaSelecionada] = useState(null)
+
+    //função para abrir dialog e ja mandar a categoria selecionada
+    const handleDialogOpen = (categoria) => {
+        setCategoriaSelecionada(categoria)
+        setOpenDetails(true)
+    }
 
     return (
         <div className="flex">
@@ -65,7 +84,7 @@ const CategoriaProduto = () => {
                             <EyeIcon
                                 size={25}
                                 className="ml-auto text-gray-500"
-                                onClick={() => openDialogDetails()}
+                                onClick={() => handleDialogOpen(categoria)}
                             />
                             <Trash2Icon
                                 size={23}
@@ -77,6 +96,7 @@ const CategoriaProduto = () => {
                 ))}
             </Card>
             <DialogCategoriaProduto open={open} onOpenChange={setOpen} onCreateCategoriaProduto={criarCategoriaProduto} />
+            <DialogCategoriaProdutoDetails open={openDetails} onOpenChange={setOpenDetails} categoriaSelecionada={categoriaSelecionada} onEditarCategoriaProduto={editarCategoriaProduto} />
         </div>
     )
 }

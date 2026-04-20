@@ -37,3 +37,17 @@ export const deleteCategoria = async (id: number) => {
     }
     return await res.json()
 };
+
+export const editarCategoria = async (id: number, nome: string) => {
+    const res = await fetch(`http://localhost:3000/categoria/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nome }),
+    })
+    if (res.status !== 200 && res.status !== 201) {
+        throw new Error("Erro ao atualizar categoria")
+    }
+    return await res.json()
+};
