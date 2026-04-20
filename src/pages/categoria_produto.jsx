@@ -6,6 +6,7 @@ import { useState, useEffect } from "react"
 import DialogCategoriaProduto from "@/components/DialogCategoriaProduto"
 import { EyeIcon, Trash2Icon } from "lucide-react"
 import DialogCategoriaProdutoDetails from "@/components/DialogCategoriaProdutoDetails"
+import { toast } from "sonner"
 
 const CategoriaProduto = () => {
     const [listaCategoria, setListaCategoria] = useState([])
@@ -18,10 +19,10 @@ const CategoriaProduto = () => {
     const criarCategoriaProduto = async (nome) => {
         try {
             await createCategoria(nome)
-            console.log("Categoria criada com sucesso!")
+            toast.success("Categoria criada com sucesso!")
             await getDados()
         } catch (error) {
-            console.error("Erro ao criar categoria: ", error)
+            toast.error("Erro ao criar categoria!")
             throw error
         }
     }
@@ -29,10 +30,10 @@ const CategoriaProduto = () => {
     const editarCategoriaProduto = async (id, nome) => {
         try {
             await editarCategoria(id, nome)
-            console.log("Categoria editada com sucesso!")
+            toast.success("Categoria editada com sucesso!")
             await getDados()
         } catch (error) {
-            console.error("Erro ao editar categoria: ", error)
+            toast.error("Erro ao editar categoria!")
             throw error
         }
     }
@@ -42,9 +43,9 @@ const CategoriaProduto = () => {
         try {
             await deleteCategoria(id)
             await getDados()
-            console.log("Categoria deletada com sucesso!")
+            toast.success("Categoria deletada com sucesso!")
         } catch (error) {
-            console.error("Erro ao deletar categoria: ", error)
+            toast.error("Erro ao deletar categoria!")
             throw error
         }
     }

@@ -5,6 +5,7 @@ import App from './App.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Teste from './pages/page'
 import CategoriaProduto from './pages/categoria_produto'
+import { Toaster } from 'sonner'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')).render(
         <Route path='/teste' element={<Teste />} />
         <Route path='/categoria-produto' element={<CategoriaProduto />} />
       </Routes>
+      <Toaster />
     </BrowserRouter>
   </StrictMode>
 )
