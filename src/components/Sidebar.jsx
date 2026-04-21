@@ -61,6 +61,13 @@ export default function Sidebar() {
                     </Link>
                 </Button>
 
+                <Button asChild variant="link" className={`text-zinc-400 hover:text-white justify-start w-full gap-3 ${!open ? "px-2 justify-center" : ""}`}>
+                    <Link to="/clientes" className="flex items-center">
+                        <Users size={20} className="shrink-0" />
+                        {open && <span className="text-sm font-medium">Clientes</span>}
+                    </Link>
+                </Button>
+
             </nav>
         </aside>
     );
