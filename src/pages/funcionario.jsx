@@ -18,14 +18,20 @@ const Funcionario = () => {
 
     const [funcionarioSelecionado, setfuncionarioSelecionado] = useState()
 
-    const handleDialogDetailsOpen = (funcionario) => {
-        setfuncionarioSelecionado(funcionario)
-        setOpenDetails(true)
-    }
-
     const getDados = async () => {
         const dados = await fetchFuncionario()
         setListaFuncionario(dados)
+    }
+
+    const criarFuncionario = async (nome, cpf) => {
+        try {
+            await createFuncionario(nome, cpf)
+            toast.success("Funcionário criado com sucesso!")
+            await getDados()
+        } catch (error) {
+            toast.error("Erro ao criar funcionário!")
+            throw error
+        }
     }
 
     const handleEditarFuncionario = async (id, nome, cpf) => {
@@ -36,17 +42,6 @@ const Funcionario = () => {
             getDados()
         } catch (error) {
             toast.error("Erro ao editar funcionário!")
-            throw error
-        }
-    }
-
-    const criarFuncionario = async (nome, cpf) => {
-        try {
-            await createFuncionario(nome, cpf)
-            toast.success("Funcionário criado com sucesso!")
-            await getDados()
-        } catch (error) {
-            toast.error("Erro ao criar funcionário!")
             throw error
         }
     }
@@ -62,7 +57,13 @@ const Funcionario = () => {
         }
     }
 
+    const handleDialogDetailsOpen = (funcionario) => {
+        setfuncionarioSelecionado(funcionario)
+        setOpenDetails(true)
+    }
+
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         getDados()
     }, [])
 

@@ -1,5 +1,5 @@
 import Sidebar from "@/components/Sidebar";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { EyeIcon, Trash2Icon } from "lucide-react"
 import { createCliente, deleteClientes, editarCliente, fetchCliente } from "@/fetchs/fetchCliente"
@@ -25,22 +25,6 @@ const Cliente = () => {
         setListaCliente(dados)
     }
 
-    const handleDialogDetailsOpen = (cliente) => {
-        setClienteSelecionado(cliente)
-        setOpenDetails(true)
-    }
-
-    const deleteCliente = async (id) => {
-        try {
-            await deleteClientes(id)
-            await getDados()
-            toast.success("Cliente deletado com sucesso!")
-        } catch (error) {
-            toast.error("Erro ao deletar cliente!")
-            throw error
-        }
-    }
-
     const handleCreateNewCliente = async (nome, cpf, telefone, email) => {
         try {
             await createCliente(nome, cpf, telefone, email)
@@ -63,7 +47,24 @@ const Cliente = () => {
         }
     }
 
+    const deleteCliente = async (id) => {
+        try {
+            await deleteClientes(id)
+            await getDados()
+            toast.success("Cliente deletado com sucesso!")
+        } catch (error) {
+            toast.error("Erro ao deletar cliente!")
+            throw error
+        }
+    }
+
+    const handleDialogDetailsOpen = (cliente) => {
+        setClienteSelecionado(cliente)
+        setOpenDetails(true)
+    }
+
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         getDados()
     }, [])
 

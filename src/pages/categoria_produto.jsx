@@ -1,7 +1,7 @@
 import Sidebar from "@/components/Sidebar"
 import { Button } from "@/components/ui/button"
 import { createCategoria, deleteCategoria, editarCategoria, fetchCategoria } from "@/fetchs/fetchCategoria"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useState, useEffect } from "react"
 import DialogCategoriaProduto from "@/components/DialogCategoriaNewProduto"
 import { EyeIcon, Trash2Icon } from "lucide-react"
@@ -9,7 +9,14 @@ import DialogCategoriaProdutoDetails from "@/components/DialogCategoriaProdutoDe
 import { toast } from "sonner"
 
 const CategoriaProduto = () => {
+    //state para receber a lista de categoria de produtos
     const [listaCategoria, setListaCategoria] = useState([])
+
+    //states para setar abrie e fechar de dialogs
+    const [open, setOpen] = useState(false)
+    const [openDetails, setOpenDetails] = useState(false)
+
+    const [categoriaSelecionada, setCategoriaSelecionada] = useState(null)
 
     const getDados = async () => {
         const dados = await fetchCategoria()
@@ -38,7 +45,6 @@ const CategoriaProduto = () => {
         }
     }
 
-
     const deleteCategoriaProduto = async (id) => {
         try {
             await deleteCategoria(id)
@@ -50,23 +56,16 @@ const CategoriaProduto = () => {
         }
     }
 
-
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        getDados()
-    }, [])
-
-    //states para setar abrie e fechar de dialogs
-    const [open, setOpen] = useState(false)
-    const [openDetails, setOpenDetails] = useState(false)
-
-    const [categoriaSelecionada, setCategoriaSelecionada] = useState(null)
-
     //função para abrir dialog e ja mandar a categoria selecionada
     const handleDialogOpen = (categoria) => {
         setCategoriaSelecionada(categoria)
         setOpenDetails(true)
     }
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        getDados()
+    }, [])
 
     return (
         <div className="flex">
