@@ -25,6 +25,7 @@ const DialogClienteDetails = ({ open, onOpenChange, clienteSelecionado, onEditar
 
     useEffect(() => {
         if (clienteSelecionado) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setNome(clienteSelecionado.nome)
             setCpf(clienteSelecionado.cpf)
             setTelefone(clienteSelecionado.telefone)
