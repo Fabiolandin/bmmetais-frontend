@@ -61,13 +61,7 @@ const Pedido = () => {
                     const total = pedido.items.reduce((acc, item) => acc + (item.quantidade * item.preco_unitario), 0)
                     return (
                         <CardContent key={pedido.id}>
-                            <Card
-                                className="p-4 hover:bg-gray-50 shadow-sm border flex flex-row items-center gap-4 cursor-pointer transition-colors"
-                                onClick={() => {
-                                    setPedidoSelecionado(pedido)
-                                    setOpenDetails(true)
-                                }}
-                            >
+                            <Card className="p-4 hover:bg-gray-50 shadow-sm border flex flex-row items-center gap-4 cursor-pointer transition-colors">
                                 <div className="font-bold text-blue-600 w-12">#{pedido.id}</div>
                                 <div className="flex-1">
                                     <div className="font-medium">{pedido.cliente?.nome}</div>
