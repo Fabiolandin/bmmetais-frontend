@@ -55,6 +55,7 @@ const DialogNewProduto = ({ open, onOpenChange, onCreateNewProduto }) => {
     // Busca as categorias ao abrir o dialog
     useEffect(() => {
         if (open) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             loadCategorias()
         }
     }, [open])

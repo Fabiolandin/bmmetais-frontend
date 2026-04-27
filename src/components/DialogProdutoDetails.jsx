@@ -43,12 +43,14 @@ const DialogProdutoDetails = ({ open, onOpenChange, produtoSelecionado, onEditar
 
     useEffect(() => {
         if (open) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             loadCategorias()
         }
     }, [open])
 
     useEffect(() => {
         if (produtoSelecionado) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setNome(produtoSelecionado.nome || "")
             setDescricao(produtoSelecionado.descricao || "")
             setPreco(produtoSelecionado.preco?.toString() || "")

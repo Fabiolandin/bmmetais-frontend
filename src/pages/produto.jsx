@@ -79,12 +79,7 @@ const Produto = () => {
                         <Card
                             className="p-4 hover:bg-gray-100 shadow flex flex-row items-center gap-4 cursor-pointer"
                         >
-                            <div className="flex-1" onClick={() => {
-                                setProdutoSelecionado(produto)
-                                setOpenDetails(true)
-                            }}>
-                                {produto.nome}
-                            </div>
+                            <div className="flex-1">{produto.nome}</div>
                             <div className="flex gap-2">
                                 <EyeIcon
                                     size={25}
