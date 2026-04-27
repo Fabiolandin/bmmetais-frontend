@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Home, Users, Settings, Menu, X, PlusIcon, Package, Truck, ShoppingCart } from "lucide-react";
+import { Home, Users, Settings, Menu, X, PlusIcon, Package, Truck, ShoppingCart, Box, Package2Icon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 
@@ -51,6 +51,13 @@ export default function Sidebar() {
                     <Link to="/compras" className="flex items-center">
                         <ShoppingCart size={20} className="shrink-0" />
                         {open && <span className="text-sm font-medium">Compras</span>}
+                    </Link>
+                </Button>
+
+                <Button asChild variant="link" className={`text-zinc-400 hover:text-white justify-start w-full gap-3 ${!open ? "px-2 justify-center" : ""}`}>
+                    <Link to="/pedidos" className="flex items-center">
+                        <Package2Icon size={20} className="shrink-0" />
+                        {open && <span className="text-sm font-medium">Pedidos</span>}
                     </Link>
                 </Button>
 

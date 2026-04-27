@@ -11,6 +11,7 @@ import Fornecedor from './pages/fornecedor'
 import Compra from './pages/compra'
 import Funcionario from './pages/funcionario'
 import Cliente from './pages/cliente'
+import Pedido from './pages/pedido'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')).render(
         <Route path='/compras' element={<Compra />} />
         <Route path='/funcionarios' element={<Funcionario />} />
         <Route path='/clientes' element={<Cliente />} />
+        <Route path='/pedidos' element={<Pedido />} />
       </Routes>
       <Toaster />
     </BrowserRouter>
