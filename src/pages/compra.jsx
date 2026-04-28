@@ -1,19 +1,21 @@
 import Sidebar from "@/components/Sidebar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { fetchCompras } from "@/fetchs/fetchCompra"
+import { createCompra, deleteCompra, fetchCompras } from "@/fetchs/fetchCompra"
 import { EyeIcon, Trash2Icon } from "lucide-react"
 import { useEffect, useState } from "react"
 import DialogNewCompra from "@/components/DialogNewCompra"
 import { DialogCompraDetails } from "@/components/DialogCompraDetails"
 
 const Compra = () => {
-    //state para receber a lisca de compras
-    const [listaCompras, setListaCompras] = useState([])
 
     //states para abrir dialogs
     const [openNewCompra, setOpenNewCompra] = useState(false)
     const [openCompraDetails, setOpenCompraDetails] = useState(false)
+    const [compraSelecionada, setCompraSelecionada] = useState(null)
+
+    //state para receber a lisca de compras
+    const [listaCompras, setListaCompras] = useState([])
 
     const getDados = async () => {
         try {
@@ -21,6 +23,24 @@ const Compra = () => {
             setListaCompras(dados)
         } catch (error) {
             console.log("Erro ao buscar compras", error)
+        }
+    }
+
+    const handleCreateNewCompra = async (data) => {
+        try {
+            await createCompra(data)
+            getDados()
+        } catch (error) {
+            console.error("Erro ao criar compra:", error)
+        }
+    }
+
+    const handleDeleteCompra = async (id) => {
+        try {
+            await deleteCompra(id)
+            getDados()
+        } catch (error) {
+            console.error("Erro ao deletar compra:", error)
         }
     }
 
@@ -37,41 +57,50 @@ const Compra = () => {
                     <CardTitle>Compras Cadastradas</CardTitle>
                     <Button variant="outline" className="ml-auto" onClick={() => setOpenNewCompra(true)}>Nova Compra</Button>
                 </CardHeader>
-                {listaCompras.map((compras) => (
-                    <CardContent key={compras.id}>
-                        <Card className="p-4 hover:bg-gray-50 shadow-sm border flex flex-row items-center gap-4 cursor-pointer transition-colors">
-                            <div className="font-bold text-blue-600 w-12">#{compras.id}</div>
-                            <div className="flex-1">
-                                <div className="font-medium">{compras.fornecedor?.nome}</div>
-                                <div className="text-sm text-gray-600">{compras.funcionario?.nome}</div>
-                            </div>
-                            <div className="text-right mr-4">
-                                <div className="font-semibold text-gray-900">R$ 1000,00</div>
-                                <div className="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Total</div>
-                            </div>
-                            <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
-                                <EyeIcon
-                                    size={22}
-                                    className="text-gray-400 hover:text-blue-500 transition-colors"
-                                    onClick={() => setOpenCompraDetails(true)}
-                                />
-                                <Trash2Icon
-                                    size={20}
-                                    className="text-red-300 hover:text-red-600 transition-colors"
-                                />
-                            </div>
-                        </Card>
-                    </CardContent>
-                ))}
+                {listaCompras.map((compras) => {
+                    const total = compras.items?.reduce((acc, item) => acc + (item.quantidade * item.preco_unitario), 0) ?? 0
+                    return (
+                        <CardContent key={compras.id}>
+                            <Card className="p-4 hover:bg-gray-50 shadow-sm border flex flex-row items-center gap-4 cursor-pointer transition-colors">
+                                <div className="font-bold text-blue-600 w-12">#{compras.id}</div>
+                                <div className="flex-1">
+                                    <div className="font-medium">{compras.fornecedor?.nome}</div>
+                                    <div className="text-sm text-gray-600">{compras.funcionario?.nome}</div>
+                                </div>
+                                <div className="text-right mr-4">
+                                    <div className="font-semibold text-gray-900">R$ {total.toFixed(2)}</div>
+                                    <div className="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Total</div>
+                                </div>
+                                <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                                    <EyeIcon
+                                        size={22}
+                                        className="text-gray-400 hover:text-blue-500 transition-colors"
+                                        onClick={() => {
+                                            setCompraSelecionada(compras)
+                                            setOpenCompraDetails(true)
+                                        }}
+                                    />
+                                    <Trash2Icon
+                                        size={20}
+                                        className="text-red-300 hover:text-red-600 transition-colors"
+                                        onClick={() => handleDeleteCompra(compras.id)}
+                                    />
+                                </div>
+                            </Card>
+                        </CardContent>
+                    )
+                })}
             </Card>
             {/* Dialogs */}
             <DialogNewCompra
                 open={openNewCompra}
                 onOpenChange={setOpenNewCompra}
+                onCreateNewCompra={handleCreateNewCompra}
             />
             <DialogCompraDetails
                 open={openCompraDetails}
                 onOpenChange={setOpenCompraDetails}
+                compra={compraSelecionada}
             />
         </div>
     )
