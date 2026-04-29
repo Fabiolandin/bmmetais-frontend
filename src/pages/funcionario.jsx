@@ -4,13 +4,19 @@ import Sidebar from "@/components/Sidebar"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createFuncionario, deleteFuncionario, editarFuncionario, fetchFuncionario } from "@/fetchs/fetchFuncionario";
-import { EyeIcon, Trash2Icon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+
+const LIMIT = 7;
 
 const Funcionario = () => {
     //state para receber a lista de funcionarios
     const [listaFuncionario, setListaFuncionario] = useState([])
+
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
+    const [total, setTotal] = useState(0)
 
     //State para abrir dialogs
     const [open, setOpen] = useState()
@@ -18,16 +24,19 @@ const Funcionario = () => {
 
     const [funcionarioSelecionado, setfuncionarioSelecionado] = useState()
 
-    const getDados = async () => {
-        const dados = await fetchFuncionario()
-        setListaFuncionario(dados)
+    const getDados = async (page = currentPage) => {
+        const resposta = await fetchFuncionario(page, LIMIT)
+        setListaFuncionario(resposta.data)
+        setTotalPages(resposta.totalPages)
+        setTotal(resposta.total)
+        setCurrentPage(resposta.page)
     }
 
     const criarFuncionario = async (nome, cpf) => {
         try {
             await createFuncionario(nome, cpf)
             toast.success("Funcionário criado com sucesso!")
-            await getDados()
+            await getDados(currentPage)
         } catch (error) {
             toast.error("Erro ao criar funcionário!")
             throw error
@@ -39,7 +48,7 @@ const Funcionario = () => {
             await editarFuncionario(id, nome, cpf)
             toast.success("Funcionário editado com sucesso!")
             setOpenDetails(false)
-            getDados()
+            getDados(currentPage)
         } catch (error) {
             toast.error("Erro ao editar funcionário!")
             throw error
@@ -50,7 +59,11 @@ const Funcionario = () => {
         try {
             await deleteFuncionario(id)
             toast.success("Funcionário deletado com sucesso!")
-            await getDados()
+            // Se deletou o último item da página atual, volta uma página
+            const novaPagina = listaFuncionario.length === 1 && currentPage > 1
+                ? currentPage - 1
+                : currentPage
+            await getDados(novaPagina)
         } catch (error) {
             toast.error("Erro ao deletar funcionário!")
             throw error
@@ -63,8 +76,8 @@ const Funcionario = () => {
     }
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        getDados()
+        getDados(1)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -94,6 +107,29 @@ const Funcionario = () => {
                         </Card>
                     </CardContent>
                 ))}
+
+                {/* Controles de paginação */}
+                <div className="flex items-center justify-center gap-4 py-4">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage <= 1}
+                        onClick={() => getDados(currentPage - 1)}
+                    >
+                        <ChevronLeftIcon size={16} />Anterior</Button>
+
+                    <span className="text-sm text-muted-foreground">
+                        Página {currentPage} de {totalPages}
+                    </span>
+
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage >= totalPages}
+                        onClick={() => getDados(currentPage + 1)}
+                    >
+                        Próxima<ChevronRightIcon size={16} /></Button>
+                </div>
             </Card>
             <DialogNewFuncionario open={open} setOpen={setOpen} onCreateFuncionario={criarFuncionario} />
             <DialogFuncionarioDetails open={openDetails} setOpen={setOpenDetails} onEditarFuncionario={handleEditarFuncionario} funcionarioSelecionado={funcionarioSelecionado} />
