@@ -1,5 +1,5 @@
-export const fetchCliente = async () => {
-    const res = await fetch("http://localhost:3000/cliente", {
+export const fetchCliente = async (page: number = 1, limit: number = 7) => {
+    const res = await fetch(`http://localhost:3000/cliente?page=${page}&limit=${limit}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -8,7 +8,7 @@ export const fetchCliente = async () => {
     if (res.status !== 200 && res.status !== 201) {
         throw new Error("Erro ao buscar cliente")
     }
-    return await res.json()
+    return await res.json() as { data: any[]; total: number; page: number; totalPages: number }
 };
 
 export const createCliente = async (nome: string, cpf: string, telefone: string, email: string) => {
