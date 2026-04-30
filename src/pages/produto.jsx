@@ -1,27 +1,38 @@
 import Sidebar from "@/components/Sidebar"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { EyeIcon, Trash2Icon } from "lucide-react"
+import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, Trash2Icon } from "lucide-react"
 import { createProduto, deleteProduto, fetchProduto, updateProduto } from "@/fetchs/fetchProduto";
 import { Button } from "@/components/ui/button";
 import DialogNewProduto from "@/components/DialogNewProduto";
 import DialogProdutoDetails from "@/components/DialogProdutoDetails";
 import { toast } from "sonner";
 
+const LIMIT = 7;
+
 const Produto = () => {
+    //state para receber a lista de produtos
+    const [listaProduto, setListaProduto] = useState([])
+
+    //state para paginação
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
+    const [total, setTotal] = useState(0)
 
     //state para abrir dialog de new produto e produto details
     const [open, setOpen] = useState(false)
     const [openDetails, setOpenDetails] = useState(false)
+
     const [produtoSelecionado, setProdutoSelecionado] = useState(null)
 
-    //state para receber a lista de produtos
-    const [listaProduto, setListaProduto] = useState([])
 
-    const getDados = async () => {
+    const getDados = async (page = currentPage) => {
         try {
-            const dados = await fetchProduto()
-            setListaProduto(dados)
+            const dados = await fetchProduto(page, LIMIT)
+            setListaProduto(dados.data)
+            setCurrentPage(dados.page)
+            setTotalPages(dados.totalPages)
+            setTotal(dados.total)
         } catch (error) {
             console.error("Erro ao buscar produtos:", error)
         }
@@ -31,7 +42,7 @@ const Produto = () => {
         try {
             await createProduto(nome, descricao, preco, categoria_produtoId, estoque)
             toast.success("Produto criado com sucesso!")
-            await getDados()
+            await getDados(currentPage)
         } catch (error) {
             toast.error("Erro ao criar novo produto!")
             throw error
@@ -41,7 +52,7 @@ const Produto = () => {
     const handleUpdateProduto = async (id, nome, descricao, preco, categoria_produtoId, estoque) => {
         try {
             await updateProduto(id, nome, descricao, preco, categoria_produtoId, estoque)
-            await getDados()
+            await getDados(currentPage)
         } catch (error) {
             console.error("Erro ao atualizar produto:", error)
             throw error
@@ -53,7 +64,7 @@ const Produto = () => {
         e.stopPropagation()
         try {
             await deleteProduto(id)
-            await getDados()
+            await getDados(currentPage)
             toast.success("Produto deletado com sucesso!")
         } catch (error) {
             toast.error("Erro ao deletar produto!")
@@ -63,7 +74,7 @@ const Produto = () => {
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        getDados()
+        getDados(1)
     }, [])
 
     return (
@@ -98,6 +109,28 @@ const Produto = () => {
                         </Card>
                     </CardContent>
                 ))}
+                {/* Controles de paginação */}
+                <div className="flex items-center justify-center gap-4 py-4">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage <= 1}
+                        onClick={() => getDados(currentPage - 1)}
+                    >
+                        <ChevronLeftIcon size={16} />Anterior</Button>
+
+                    <span className="text-sm text-muted-foreground">
+                        Página {currentPage} de {totalPages}
+                    </span>
+
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage >= totalPages}
+                        onClick={() => getDados(currentPage + 1)}
+                    >
+                        Próxima<ChevronRightIcon size={16} /></Button>
+                </div>
             </Card>
             <DialogNewProduto open={open} onOpenChange={setOpen} onCreateNewProduto={handleCreateNewProduto} />
             <DialogProdutoDetails open={openDetails} onOpenChange={setOpenDetails} produtoSelecionado={produtoSelecionado} onEditarProduto={handleUpdateProduto} />
