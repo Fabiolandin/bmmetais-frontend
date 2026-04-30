@@ -1,5 +1,5 @@
-export const fetchCategoria = async () => {
-    const res = await fetch("http://localhost:3000/categoria", {
+export const fetchCategoria = async (page: number = 1, limit: number = 7) => {
+    const res = await fetch(`http://localhost:3000/categoria?page=${page}&limit=${limit}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -8,7 +8,7 @@ export const fetchCategoria = async () => {
     if (res.status !== 200 && res.status !== 201) {
         throw new Error("Erro ao buscar categoria")
     }
-    return await res.json()
+    return await res.json() as { data: any[]; total: number; page: number; totalPages: number }
 };
 
 export const createCategoria = async (nome: string) => {

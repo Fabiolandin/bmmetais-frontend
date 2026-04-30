@@ -1,5 +1,5 @@
-export const fetchProduto = async () => {
-    const res = await fetch("http://localhost:3000/produtos", {
+export const fetchProduto = async (page: number = 1, limit: number = 7) => {
+    const res = await fetch(`http://localhost:3000/produtos?page=${page}&limit=${limit}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -8,7 +8,7 @@ export const fetchProduto = async () => {
     if (res.status !== 200 && res.status !== 201) {
         throw new Error("Erro ao buscar produto")
     }
-    return await res.json()
+    return await res.json() as { data: any[]; total: number; page: number; totalPages: number }
 };
 
 export const createProduto = async (nome: string, descricao: string, preco: number, categoria_produtoId: number, estoque: number,) => {
@@ -33,7 +33,7 @@ export const deleteProduto = async (id: number) => {
             "Content-Type": "application/json",
         },
     })
-    
+
     console.log("Status da resposta de exclusão:", res.status)
 
     if (res.status === 204) return null
