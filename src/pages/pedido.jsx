@@ -2,25 +2,35 @@ import Sidebar from "@/components/Sidebar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { fetchPedido, createPedido, deletePedido } from "@/fetchs/fetchPedido"
-import { EyeIcon, Trash2Icon } from "lucide-react"
+import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, Trash2Icon } from "lucide-react"
 import { useEffect, useState } from "react"
 import DialogNewPedido from "@/components/DialogNewPedido"
 import DialogPedidoDetails from "@/components/DialogPedidoDetails"
 
+const LIMIT = 7
+
 const Pedido = () => {
+    //state para receber a lista de pedidos
+    const [listaPedido, setListaPedido] = useState([])
+
+    //states para paginação
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
+    const [total, setTotal] = useState(0)
 
     //state para abrir dialog's
     const [open, setOpen] = useState(false)
     const [openDetails, setOpenDetails] = useState(false)
     const [pedidoSelecionado, setPedidoSelecionado] = useState(null)
 
-    //state para receber a lista de pedidos
-    const [listaPedido, setListaPedido] = useState([])
 
-    const getDados = async () => {
+    const getDados = async (page = currentPage) => {
         try {
-            const dados = await fetchPedido()
-            setListaPedido(dados)
+            const dados = await fetchPedido(page, LIMIT)
+            setListaPedido(dados.data)
+            setTotal(dados.total)
+            setTotalPages(dados.totalPages)
+            setCurrentPage(dados.page)
         } catch (error) {
             console.error("Erro ao buscar dados:", error)
         }
@@ -29,7 +39,7 @@ const Pedido = () => {
     const handleCreatePedido = async (data) => {
         try {
             await createPedido(data)
-            await getDados()
+            await getDados(currentPage)
         } catch (error) {
             console.error("Erro ao criar pedido:", error)
         }
@@ -38,7 +48,7 @@ const Pedido = () => {
     const handleDeletePedido = async (id) => {
         try {
             await deletePedido(id)
-            await getDados()
+            await getDados(currentPage)
         } catch (error) {
             console.error("Erro ao deletar pedido:", error)
         }
@@ -46,7 +56,7 @@ const Pedido = () => {
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        getDados()
+        getDados(1)
     }, [])
 
     return (
@@ -92,6 +102,29 @@ const Pedido = () => {
                         </CardContent>
                     )
                 })}
+
+                {/* Controles de paginação */}
+                <div className="flex items-center justify-center gap-4 py-4">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage <= 1}
+                        onClick={() => getDados(currentPage - 1)}
+                    >
+                        <ChevronLeftIcon size={16} />Anterior</Button>
+
+                    <span className="text-sm text-muted-foreground">
+                        Página {currentPage} de {totalPages}
+                    </span>
+
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage >= totalPages}
+                        onClick={() => getDados(currentPage + 1)}
+                    >
+                        Próxima<ChevronRightIcon size={16} /></Button>
+                </div>
             </Card>
             <DialogNewPedido open={open} onOpenChange={setOpen} onCreateNewPedido={handleCreatePedido} />
             <DialogPedidoDetails open={openDetails} onOpenChange={setOpenDetails} pedido={pedidoSelecionado} />

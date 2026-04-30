@@ -2,25 +2,34 @@ import Sidebar from "@/components/Sidebar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { createCompra, deleteCompra, fetchCompras } from "@/fetchs/fetchCompra"
-import { EyeIcon, Trash2Icon } from "lucide-react"
+import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, Trash2Icon } from "lucide-react"
 import { useEffect, useState } from "react"
 import DialogNewCompra from "@/components/DialogNewCompra"
 import { DialogCompraDetails } from "@/components/DialogCompraDetails"
 
+const LIMIT = 7;
+
 const Compra = () => {
+    //state para receber a lisca de compras
+    const [listaCompras, setListaCompras] = useState([])
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [total, setTotal] = useState(0);
 
     //states para abrir dialogs
     const [openNewCompra, setOpenNewCompra] = useState(false)
     const [openCompraDetails, setOpenCompraDetails] = useState(false)
     const [compraSelecionada, setCompraSelecionada] = useState(null)
 
-    //state para receber a lisca de compras
-    const [listaCompras, setListaCompras] = useState([])
 
-    const getDados = async () => {
+    const getDados = async (page = currentPage) => {
         try {
-            const dados = await fetchCompras()
-            setListaCompras(dados)
+            const resposta = await fetchCompras(page, LIMIT)
+            setListaCompras(resposta.data)
+            setTotalPages(resposta.totalPages)
+            setTotal(resposta.total)
+            setCurrentPage(resposta.page)
         } catch (error) {
             console.log("Erro ao buscar compras", error)
         }
@@ -29,7 +38,7 @@ const Compra = () => {
     const handleCreateNewCompra = async (data) => {
         try {
             await createCompra(data)
-            getDados()
+            getDados(currentPage)
         } catch (error) {
             console.error("Erro ao criar compra:", error)
         }
@@ -38,7 +47,7 @@ const Compra = () => {
     const handleDeleteCompra = async (id) => {
         try {
             await deleteCompra(id)
-            getDados()
+            getDados(currentPage)
         } catch (error) {
             console.error("Erro ao deletar compra:", error)
         }
@@ -46,7 +55,7 @@ const Compra = () => {
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        getDados()
+        getDados(1)
     }, [])
 
     return (
@@ -90,6 +99,29 @@ const Compra = () => {
                         </CardContent>
                     )
                 })}
+
+                {/* Controles de paginação */}
+                <div className="flex items-center justify-center gap-4 py-4">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage <= 1}
+                        onClick={() => getDados(currentPage - 1)}
+                    >
+                        <ChevronLeftIcon size={16} />Anterior</Button>
+
+                    <span className="text-sm text-muted-foreground">
+                        Página {currentPage} de {totalPages}
+                    </span>
+
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={currentPage >= totalPages}
+                        onClick={() => getDados(currentPage + 1)}
+                    >
+                        Próxima<ChevronRightIcon size={16} /></Button>
+                </div>
             </Card>
             {/* Dialogs */}
             <DialogNewCompra
