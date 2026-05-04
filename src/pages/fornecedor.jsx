@@ -86,9 +86,9 @@ const Fornecedor = () => {
     }, [])
 
     return (
-        <div className="flex">
+        <div className="flex h-screen overflow-hidden">
             <Sidebar />
-            <Card className=" shadow flex-1 mb-4 mt-4 mr-4 ml-4 rounded-xl">
+            <Card className="shadow flex-1 mb-4 mt-4 mr-4 ml-4 rounded-xl">
                 <CardHeader className="flex">
                     <CardTitle>Fornecedores Cadastrados</CardTitle>
                     <Button variant="outline" className="ml-auto" onClick={() => setOpen(true)}>Novo fornecedor</Button>

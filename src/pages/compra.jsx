@@ -59,9 +59,9 @@ const Compra = () => {
     }, [])
 
     return (
-        <div className="flex">
+        <div className="flex h-screen overflow-hidden">
             <Sidebar />
-            <Card className=" flex-1 mb-4 mt-4 mr-4 ml-4 rounded-xl">
+            <Card className="flex-1 mb-4 mt-4 mr-4 ml-4 rounded-xl">
                 <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Compras Cadastradas</CardTitle>
                     <Button variant="outline" className="ml-auto" onClick={() => setOpenNewCompra(true)}>Nova Compra</Button>
