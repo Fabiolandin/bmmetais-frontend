@@ -1,7 +1,7 @@
 import Sidebar from "@/components/Sidebar"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, Trash2Icon } from "lucide-react"
+import { BoxIcon, ChevronLeftIcon, ChevronRightIcon, DollarSignIcon, EyeIcon, Trash2Icon } from "lucide-react"
 import { createProduto, deleteProduto, fetchProduto, updateProduto } from "@/fetchs/fetchProduto";
 import { Button } from "@/components/ui/button";
 import DialogNewProduto from "@/components/DialogNewProduto";
@@ -88,10 +88,19 @@ const Produto = () => {
                 {listaProduto.map((produto) => (
                     <CardContent key={produto.id}>
                         <Card
-                            className="p-4 hover:bg-gray-100 shadow flex flex-row items-center gap-4 cursor-pointer"
+                            className="p-4 hover:bg-gray-100 shadow flex flex-row items-center gap-4"
                         >
-                            <div className="flex-1">{produto.nome}</div>
-                            <div className="flex gap-2">
+                            <div className="flex-1">{produto.nome}
+                                <div className="flex gap-1 items-center">
+                                    <BoxIcon size={15} className="text-gray-500 " />
+                                    <p className="text-xs text-muted-foreground">Estoque: {produto.estoque}</p>
+                                </div>
+                            </div>
+                            <div className="flex gap-2 items-center justify-center align-center">
+                                <p className="flex gap-2 items-center justify-center align-center">
+                                    <DollarSignIcon size={20} className="text-green-500 " />
+                                    {produto.preco.toFixed(2)}
+                                </p>
                                 <EyeIcon
                                     size={25}
                                     className="text-gray-500 cursor-pointer hover:text-blue-500"

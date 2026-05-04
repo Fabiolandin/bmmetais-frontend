@@ -5,7 +5,7 @@ import Sidebar from "@/components/Sidebar"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createFornecedor, deleteFornecedor, editarFornecedor, fetchFornecedor } from "@/fetchs/fetchFornecedor";
-import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, Trash2Icon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, CreditCardIcon, EyeIcon, IdCardIcon, Phone, Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -81,8 +81,8 @@ const Fornecedor = () => {
     }
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         getDados(1)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -98,7 +98,15 @@ const Fornecedor = () => {
                         <Card
                             className="p-4 hover:bg-gray-100 shadow flex-row"
                         >
-                            {fornecedor.nome}
+                            <div className="flex-1">{fornecedor.nome}
+                                <div className="flex gap-1 items-center">
+                                    <IdCardIcon size={15} className="text-gray-500 " />
+                                    <p className="text-xs text-muted-foreground">CNPJ: {fornecedor.cnpj}</p>
+                                    <Phone size={15} className="text-gray-500 ml-3" />
+                                    <p className="text-xs text-muted-foreground">Telefone: {fornecedor.telefone}</p>
+                                </div>
+                            </div>
+
                             <EyeIcon
                                 size={25}
                                 className="ml-auto text-gray-500"

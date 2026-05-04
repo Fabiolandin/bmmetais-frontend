@@ -4,7 +4,7 @@ import Sidebar from "@/components/Sidebar"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createFuncionario, deleteFuncionario, editarFuncionario, fetchFuncionario } from "@/fetchs/fetchFuncionario";
-import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, Trash2Icon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, IdCardIcon, Trash2Icon, UserIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -93,7 +93,12 @@ const Funcionario = () => {
                         <Card
                             className="p-4 hover:bg-gray-100 shadow flex-row"
                         >
-                            {funcionario.nome}
+                            <div className="flex-1">{funcionario.nome}
+                                <div className="flex gap-1 items-center">
+                                    <UserIcon size={15} className="text-gray-500 " />
+                                    <p className="text-xs text-muted-foreground">CPF: {funcionario.cpf}</p>
+                                </div>
+                            </div>
                             <EyeIcon
                                 size={25}
                                 className="ml-auto text-gray-500"

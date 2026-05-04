@@ -1,7 +1,7 @@
 import Sidebar from "@/components/Sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, Trash2Icon } from "lucide-react"
+import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, Phone, Trash2Icon, UserIcon } from "lucide-react"
 import { createCliente, deleteClientes, editarCliente, fetchCliente } from "@/fetchs/fetchCliente"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
@@ -91,7 +91,14 @@ const Cliente = () => {
                         <Card
                             className="p-4 hover:bg-gray-100 shadow flex-row"
                         >
-                            {cliente.nome}
+                            <div className="flex-1">{cliente.nome}
+                                <div className="flex gap-1 items-center">
+                                    <UserIcon size={15} className="text-gray-500 " />
+                                    <p className="text-xs text-muted-foreground">{cliente.email}</p>
+                                    <Phone size={15} className="text-gray-500 ml-3" />
+                                    <p className="text-xs text-muted-foreground">Telefone: {cliente.telefone}</p>
+                                </div>
+                            </div>
                             <EyeIcon
                                 size={25}
                                 className="ml-auto text-gray-500"
