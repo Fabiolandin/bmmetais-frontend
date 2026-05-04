@@ -94,7 +94,7 @@ const Cliente = () => {
                             <div className="flex-1">{cliente.nome}
                                 <div className="flex gap-1 items-center">
                                     <UserIcon size={15} className="text-gray-500 " />
-                                    <p className="text-xs text-muted-foreground">{cliente.email}</p>
+                                    <p className="text-xs text-muted-foreground">Email: {cliente.email}</p>
                                     <Phone size={15} className="text-gray-500 ml-3" />
                                     <p className="text-xs text-muted-foreground">Telefone: {cliente.telefone}</p>
                                 </div>
