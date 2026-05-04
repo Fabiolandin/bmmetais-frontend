@@ -32,9 +32,9 @@ const DialogNewCompra = ({ open, onOpenChange, onCreateNewCompra }) => {
                 fetchFuncionario(),
                 fetchProduto()
             ])
-            setFornecedores(fornecedoresData)
-            setFuncionarios(funcionariosData)
-            setProdutos(produtosData)
+            setFornecedores(fornecedoresData.data ?? fornecedoresData)
+            setFuncionarios(funcionariosData.data ?? funcionariosData)
+            setProdutos(produtosData.data ?? produtosData)
         } catch (error) {
             console.error("Erro ao carregar dados iniciais:", error)
         }

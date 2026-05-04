@@ -19,8 +19,8 @@ const DialogProdutoDetails = ({ open, onOpenChange, produtoSelecionado, onEditar
     // Função para buscar as categorias
     const loadCategorias = async () => {
         try {
-            const data = await fetchCategoria()
-            setCategorias(data)
+            const res = await fetchCategoria()
+            setCategorias(res.data ?? res)
         } catch (error) {
             console.error("Erro ao carregar categorias:", error)
         }
