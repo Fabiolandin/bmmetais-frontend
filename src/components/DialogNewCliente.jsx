@@ -53,7 +53,11 @@ const DialogNewCliente = ({ open, onOpenChange, onCreateNewCliente }) => {
                         </div>
                         <DialogFooter className="">
                             <Button variant="outline" onClick={() => onOpenChange(false)}>Cancelar</Button>
-                            <Button type="button" onClick={handleSubmit}>Salvar</Button>
+                            <Button
+                                type="button"
+                                onClick={handleSubmit}
+                                disabled={!nome.trim() || !cpf.trim() || !telefone.trim() || !email.trim()}
+                            >Salvar</Button>
                         </DialogFooter>
                     </form>
                 </DialogContent>

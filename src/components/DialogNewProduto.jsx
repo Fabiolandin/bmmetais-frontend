@@ -108,7 +108,11 @@ const DialogNewProduto = ({ open, onOpenChange, onCreateNewProduto }) => {
                         </div>
                         <DialogFooter className="mt-4">
                             <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>Cancelar</Button>
-                            <Button type="button" onClick={handleSubmit}>Salvar</Button>
+                            <Button
+                                type="button"
+                                onClick={handleSubmit}
+                                disabled={!nome.trim() || !descricao.trim() || !preco.trim() || !categoria_produtoId.trim() || !estoque.trim()}
+                            >Salvar</Button>
                         </DialogFooter>
                     </form>
                 </DialogContent>

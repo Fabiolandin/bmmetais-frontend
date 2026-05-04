@@ -42,7 +42,11 @@ const DialogNewFuncionario = ({ open, setOpen, onCreateFuncionario }) => {
                     </form>
                     <DialogFooter>
                         <Button variant="outline" onClick={handleClose}>Cancelar</Button>
-                        <Button type="button" onClick={handleSubmit}>Salvar</Button>
+                        <Button
+                            type="button"
+                            onClick={handleSubmit}
+                            disabled={!nome.trim() || !cpf.trim()}
+                        >Salvar</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

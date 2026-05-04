@@ -228,7 +228,10 @@ const DialogNewPedido = ({ open, onOpenChange, onCreateNewPedido }) => {
 
                 <DialogFooter>
                     <Button variant="outline" onClick={() => onOpenChange(false)}>Cancelar</Button>
-                    <Button onClick={handleSubmit}>Finalizar Pedido</Button>
+                    <Button
+                        onClick={handleSubmit}
+                        disabled={!clienteId || !funcionarioId || items.length === 0}
+                    >Finalizar Pedido</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

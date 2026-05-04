@@ -225,7 +225,10 @@ const DialogNewCompra = ({ open, onOpenChange, onCreateNewCompra }) => {
                 </div>
                 <DialogFooter>
                     <Button variant="outline" onClick={() => onOpenChange(false)}>Cancelar</Button>
-                    <Button onClick={handleSubmit}>Criar Compra</Button>
+                    <Button
+                        onClick={handleSubmit}
+                        disabled={!fornecedorId || !funcionarioId || items.length === 0}
+                    >Criar Compra</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
