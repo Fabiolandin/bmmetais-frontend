@@ -6,6 +6,7 @@ import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, Trash2Icon } from "lucide-r
 import { useEffect, useState } from "react"
 import DialogNewPedido from "@/components/DialogNewPedido"
 import DialogPedidoDetails from "@/components/DialogPedidoDetails"
+import { toast } from "sonner"
 
 const LIMIT = 7
 
@@ -40,7 +41,9 @@ const Pedido = () => {
         try {
             await createPedido(data)
             await getDados(currentPage)
+            toast.success("Pedido criado com sucesso!")
         } catch (error) {
+            toast.error("Erro ao criar pedido")
             console.error("Erro ao criar pedido:", error)
         }
     }
