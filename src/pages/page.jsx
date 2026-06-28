@@ -1,15 +1,46 @@
 import Sidebar from "@/components/Sidebar"
+import { Card, CardContent } from "@/components/ui/card"
 
-const Teste = () => {
+const Main = () => {
+
+    const getPedidos = async
     return (
-        <div className="flex bg-zinc-50 min-h-screen">
+        <div className="flex">
             <Sidebar />
-            <main className="flex-1 p-8">
-                <h1 className="text-3xl font-bold text-zinc-800">Página Inicial</h1>
-                <p className="text-zinc-500 mt-2">Bem-vindo ao sistema BM Metais.</p>
-            </main>
+            <div className="flex flex-col h-screen w-screen">
+                <div className="flex p-4 gap-10">
+
+                    <Card className="flex-1 h-40 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                        <CardContent className="flex h-full flex-col justify-between p-6">
+                            <div>
+                                <p className="text-sm text-muted-foreground">Total de Pedidos</p>
+                                <h2 className="text-4xl font-bold mt-2"> 1.000 </h2>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="flex-1 h-40 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                        <CardContent className="flex h-full flex-col justify-between p-6">
+                            <div>
+                                <p className="text-sm text-muted-foreground">Total de Compras</p>
+                                <h2 className="text-4xl font-bold mt-2"> 1.000 </h2>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="flex-1 h-40 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                        <CardContent className="flex h-full flex-col justify-between p-6">
+                            <div>
+                                <p className="text-sm text-muted-foreground">Lucro Total</p>
+                                <h2 className="text-4xl font-bold mt-2"> 1.000 </h2>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                </div>
+            </div>
         </div>
     )
 }
 
-export default Teste
+export default Main
