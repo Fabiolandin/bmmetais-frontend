@@ -96,11 +96,13 @@ const Produto = () => {
                                     <p className="text-xs text-muted-foreground">Estoque: {produto.estoque}</p>
                                 </div>
                             </div>
+
+                            <div className="text-right mr-4">
+                                <div className="font-semibold text-gray-900">R$ {produto.preco.toFixed(2)}</div>
+                                <div className="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Valor unitário</div>
+                            </div>
+
                             <div className="flex gap-2 items-center justify-center align-center">
-                                <p className="flex gap-2 items-center justify-center align-center">
-                                    <DollarSignIcon size={20} className="text-green-500 " />
-                                    {produto.preco.toFixed(2)}
-                                </p>
                                 <EyeIcon
                                     size={25}
                                     className="text-gray-500 cursor-pointer hover:text-blue-500"
