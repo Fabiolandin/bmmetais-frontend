@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import DialogNewCliente from "@/components/DialogNewCliente";
 import DialogClienteDetails from "@/components/DialogClienteDetails";
+import { formatarTelefone } from "@/utils/formaters/telefone";
 
 const LIMIT = 7;
 
@@ -96,7 +97,7 @@ const Cliente = () => {
                                     <UserIcon size={15} className="text-gray-500 " />
                                     <p className="text-xs text-muted-foreground">Email: {cliente.email}</p>
                                     <Phone size={15} className="text-gray-500 ml-3" />
-                                    <p className="text-xs text-muted-foreground">Telefone: {cliente.telefone}</p>
+                                    <p className="text-xs text-muted-foreground">Telefone: {formatarTelefone(cliente.telefone)}</p>
                                 </div>
                             </div>
                             <EyeIcon

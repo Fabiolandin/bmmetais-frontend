@@ -12,7 +12,7 @@ const DialogNewCliente = ({ open, onOpenChange, onCreateNewCliente }) => {
 
     const handleSubmit = async () => {
         try {
-            await onCreateNewCliente(nome, cpf, telefone, email)
+            await onCreateNewCliente(nome, cpf.replace(/\D/g, ''), telefone.replace(/\D/g, ''), email.toLowerCase())
             setNome("")
             setCpf("")
             setTelefone("")

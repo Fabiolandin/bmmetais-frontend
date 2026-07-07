@@ -14,7 +14,7 @@ const DialogClienteDetails = ({ open, onOpenChange, clienteSelecionado, onEditar
 
     const handleSubmit = async () => {
         try {
-            await onEditarCliente(clienteSelecionado.id, nome, cpf, telefone, email)
+            await onEditarCliente(clienteSelecionado.id, nome, cpf.replace(/\D/g, ''), telefone.replace(/\D/g, ''), email.toLowerCase())
             toast.success("Cliente editado com sucesso!")
             onOpenChange(false)
         } catch (error) {
