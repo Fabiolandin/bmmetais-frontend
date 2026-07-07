@@ -4,6 +4,7 @@ import Sidebar from "@/components/Sidebar"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createFuncionario, deleteFuncionario, editarFuncionario, fetchFuncionario } from "@/fetchs/fetchFuncionario";
+import { formatarCpfCnpj } from "@/utils/formaters/cpfecnpj";
 import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, IdCardIcon, Trash2Icon, UserIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -96,7 +97,7 @@ const Funcionario = () => {
                             <div className="flex-1">{funcionario.nome}
                                 <div className="flex gap-1 items-center">
                                     <UserIcon size={15} className="text-gray-500 " />
-                                    <p className="text-xs text-muted-foreground">CPF: {funcionario.cpf}</p>
+                                    <p className="text-xs text-muted-foreground">CPF: {formatarCpfCnpj(funcionario.cpf)}</p>
                                 </div>
                             </div>
                             <EyeIcon

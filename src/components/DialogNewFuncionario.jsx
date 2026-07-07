@@ -10,7 +10,7 @@ const DialogNewFuncionario = ({ open, setOpen, onCreateFuncionario }) => {
 
     const handleSubmit = async () => {
         try {
-            await onCreateFuncionario(nome, cpf)
+            await onCreateFuncionario(nome, cpf.replace(/\D/g, ''))
             setNome("")
             setCpf("")
             setOpen(false)

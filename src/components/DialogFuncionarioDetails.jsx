@@ -16,7 +16,7 @@ const DialogFuncionarioDetails = ({ open, setOpen, funcionarioSelecionado, onEdi
 
     const handleSubmit = async () => {
         try {
-            await onEditarFuncionario(funcionarioSelecionado.id, nome, cpf)
+            await onEditarFuncionario(funcionarioSelecionado.id, nome, cpf.replace(/\D/g, ''))
             toast.success("Funcionário editado com sucesso!")
             setOpen(false)
         } catch (error) {
