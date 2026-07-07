@@ -14,7 +14,7 @@ const DialogFornecedorDetails = ({ open, onOpenChange, fornecedorSelecionado, on
 
     const handleSubmit = async () => {
         try {
-            await onEditarFornecedor(fornecedorSelecionado.id, nome, cnpj, telefone, email)
+            await onEditarFornecedor(fornecedorSelecionado.id, nome, cnpj.replace(/\D/g, ''), telefone.replace(/\D/g, ''), email)
             toast.success("Fornecedor editado com sucesso!")
             onOpenChange(false)
         } catch (error) {

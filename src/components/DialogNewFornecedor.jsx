@@ -12,7 +12,7 @@ const DialogNewFornecedor = ({ open, onOpenChange, onCreateNewFornecedor }) => {
 
     const handleSubmit = async () => {
         try {
-            await onCreateNewFornecedor(nome, cnpj, telefone, email)
+            await onCreateNewFornecedor(nome, cnpj.replace(/\D/g, ''), telefone.replace(/\D/g, ''), email)
             setNome("")
             setCnpj("")
             setTelefone("")

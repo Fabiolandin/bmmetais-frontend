@@ -5,7 +5,9 @@ import Sidebar from "@/components/Sidebar"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createFornecedor, deleteFornecedor, editarFornecedor, fetchFornecedor } from "@/fetchs/fetchFornecedor";
-import { ChevronLeftIcon, ChevronRightIcon, CreditCardIcon, EyeIcon, IdCardIcon, Phone, Trash2Icon } from "lucide-react";
+import { formatarCpfCnpj } from "@/utils/formaters/cpfecnpj";
+import { formatarTelefone } from "@/utils/formaters/telefone";
+import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, IdCardIcon, Phone, Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -30,10 +32,6 @@ const Fornecedor = () => {
     const handleDialogDetailsOpen = (fornecedor) => {
         setFornecedorSelecionado(fornecedor)
         setOpenDetails(true)
-    }
-
-    const deleteCliente = () => {
-
     }
 
     const getDados = async (page = currentPage) => {
@@ -101,9 +99,9 @@ const Fornecedor = () => {
                             <div className="flex-1">{fornecedor.nome}
                                 <div className="flex gap-1 items-center">
                                     <IdCardIcon size={15} className="text-gray-500 " />
-                                    <p className="text-xs text-muted-foreground">CNPJ: {fornecedor.cnpj}</p>
+                                    <p className="text-xs text-muted-foreground">CNPJ: {formatarCpfCnpj(fornecedor.cnpj)}</p>
                                     <Phone size={15} className="text-gray-500 ml-3" />
-                                    <p className="text-xs text-muted-foreground">Telefone: {fornecedor.telefone}</p>
+                                    <p className="text-xs text-muted-foreground">Telefone: {formatarTelefone(fornecedor.telefone)}</p>
                                 </div>
                             </div>
 
