@@ -89,16 +89,22 @@ const Main = () => {
                     <XAxis dataKey="mes" />
 
                     {/* eixo Vertical */}
-                    <YAxis />
+                    <YAxis yAxisId="left" orientation="left" stroke="#8884d8"/>
+
+                    <YAxis yAxisId="right" orientation="right" stroke="#82ca9d"/>
 
                     <Tooltip />
 
                     <Line
+                    name="Total de Pedidos"
+                    yAxisId="left"
                         type="linear"
                         dataKey="total_pedidos"
                         stroke="red"
                     />
                     <Line
+                    name="Faturamento"
+                    yAxisId="right"
                         dataKey="total_faturamento"
                         stroke="#26a641"
                     />
