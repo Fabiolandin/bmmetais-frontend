@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "./ui/dialog"
 import { Button } from "./ui/button"
 import { Card } from "./ui/card"
+import { formatarTelefone } from "@/utils/formaters/telefone"
 
 const DialogPedidoDetails = ({ open, onOpenChange, pedido }) => {
     if (!pedido) return null
@@ -21,7 +22,7 @@ const DialogPedidoDetails = ({ open, onOpenChange, pedido }) => {
                     <div className="space-y-1">
                         <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Cliente</p>
                         <p className="text-lg font-medium">{pedido.cliente?.nome}</p>
-                        <p className="text-sm text-gray-600">{pedido.cliente?.telefone}</p>
+                        <p className="text-sm text-gray-600">{formatarTelefone(pedido.cliente?.telefone)}</p>
                     </div>
                     <div className="space-y-1">
                         <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Funcionário Responsável</p>
