@@ -12,6 +12,7 @@ import {
     CartesianGrid,
     Tooltip,
     ResponsiveContainer,
+    Legend,
 } from "recharts";
 
 const Main = () => {
@@ -93,7 +94,17 @@ const Main = () => {
 
                     <YAxis yAxisId="right" orientation="right" stroke="#82ca9d"/>
 
-                    <Tooltip />
+                    <Tooltip 
+                        formatter={(value) => [
+                        new Intl.NumberFormat('pt-BR', { 
+                        style: 'currency', 
+                        currency: 'BRL' 
+                         }).format(value),
+                        'Faturamento'
+                        ]}
+                    />
+
+                    <Legend />
 
                     <Line
                     name="Total de Pedidos"
