@@ -44,7 +44,7 @@ const Main = () => {
     return (
         <div className="flex">
             <Sidebar />
-            <div className="flex flex-col h-screen w-screen">
+            <div className="flex flex-col h-screen w-screen overflow-x-hidden">
                 <div className="flex p-4 gap-10">
 
                     <Card className="flex-1 h-40 rounded-xl shadow-md hover:shadow-lg transition-shadow">
@@ -76,51 +76,49 @@ const Main = () => {
 
                 </div>
 
-                <ResponsiveContainer
-                    width="95%"
-                    height={450}
-                    className="p-2"
-                >
+                <div className="w-full px-4 pb-4 overflow-hidden">
+                    <ResponsiveContainer width="100%" height={450}>
+                        {/* gráfico de pedidos */}
+                        <LineChart data={graficoDados} margin={{ top: 20, right: 40, left: 10, bottom: 10 }}>
+                            <CartesianGrid strokeDasharray="3 3" />
 
-                {/* gráfico de pedidos */}
-                <LineChart data={graficoDados} className="mt-10">
-                    <CartesianGrid strokeDasharray="3 3" />
+                            {/* eixo Horizontal */}
+                            <XAxis dataKey="mes" />
 
-                    {/* eixo Horizontal */}
-                    <XAxis dataKey="mes" />
+                            {/* eixo Vertical */}
+                            <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
 
-                    {/* eixo Vertical */}
-                    <YAxis yAxisId="left" orientation="left" stroke="#8884d8"/>
+                            <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
 
-                    <YAxis yAxisId="right" orientation="right" stroke="#82ca9d"/>
+                            <Tooltip
+                                allowEscapeViewBox={{ x: false, y: false }}
+                                formatter={(value) => [
+                                    new Intl.NumberFormat('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    }).format(value),
+                                    'Faturamento'
+                                ]}
+                            />
 
-                    <Tooltip 
-                        formatter={(value) => [
-                        new Intl.NumberFormat('pt-BR', { 
-                        style: 'currency', 
-                        currency: 'BRL' 
-                         }).format(value),
-                        'Faturamento'
-                        ]}
-                    />
+                            <Legend />
 
-                    <Legend />
-
-                    <Line
-                    name="Total de Pedidos"
-                    yAxisId="left"
-                        type="linear"
-                        dataKey="total_pedidos"
-                        stroke="red"
-                    />
-                    <Line
-                    name="Faturamento"
-                    yAxisId="right"
-                        dataKey="total_faturamento"
-                        stroke="#26a641"
-                    />
-                </LineChart>
-                </ResponsiveContainer>
+                            <Line
+                                name="Total de Pedidos"
+                                yAxisId="left"
+                                type="linear"
+                                dataKey="total_pedidos"
+                                stroke="red"
+                            />
+                            <Line
+                                name="Faturamento"
+                                yAxisId="right"
+                                dataKey="total_faturamento"
+                                stroke="#26a641"
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
 
             </div>
         </div>
