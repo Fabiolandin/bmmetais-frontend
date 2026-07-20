@@ -60,7 +60,6 @@ const Produto = () => {
     }
 
     const handleDeleteProduto = async (e, id) => {
-        console.log("handleDeleteProduto clicado para ID:", id)
         e.stopPropagation()
         try {
             await deleteProduto(id)

@@ -6,6 +6,7 @@ import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, Trash2Icon } from "lucide-r
 import { useEffect, useState } from "react"
 import DialogNewCompra from "@/components/DialogNewCompra"
 import { DialogCompraDetails } from "@/components/DialogCompraDetails"
+import { toast } from "sonner"
 
 const LIMIT = 7;
 
@@ -31,7 +32,7 @@ const Compra = () => {
             setTotal(resposta.total)
             setCurrentPage(resposta.page)
         } catch (error) {
-            console.log("Erro ao buscar compras", error)
+            toast.error("Erro ao buscar compras")
         }
     }
 

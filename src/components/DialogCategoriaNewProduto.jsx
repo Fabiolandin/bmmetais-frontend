@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
 import { useState } from "react"
+import { toast } from "sonner"
 
 const DialogCategoriaProduto = ({ open, onOpenChange, onCreateCategoriaProduto }) => {
     const [nome, setNome] = useState("")
@@ -13,7 +14,7 @@ const DialogCategoriaProduto = ({ open, onOpenChange, onCreateCategoriaProduto }
             setNome("")
             onOpenChange(false)
         } catch (error) {
-            console.log("Erro ao criar categoria de produto: ", error)
+            toast.error('Erro ao criar categoria de produto')
         }
     }
 

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
 import { useEffect, useState } from "react"
+import { toast } from "sonner"
 
 const DialogCategoriaProdutoDetails = ({ open, onOpenChange, categoriaSelecionada, onEditarCategoriaProduto }) => {
 
@@ -13,7 +14,7 @@ const DialogCategoriaProdutoDetails = ({ open, onOpenChange, categoriaSelecionad
         if (!nomeEditado.trim()) return
         try {
             await onEditarCategoriaProduto(categoriaSelecionada.id, nomeEditado)
-            console.log("Categoria editada com sucesso!")
+            toast.success('Categoria editada com sucesso')
             onOpenChange(false)
         } catch (error) {
             console.error("Erro ao editar categoria: ", error)

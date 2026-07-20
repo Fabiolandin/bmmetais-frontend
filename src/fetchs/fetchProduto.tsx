@@ -26,7 +26,7 @@ export const createProduto = async (nome: string, descricao: string, preco: numb
 };
 
 export const deleteProduto = async (id: number) => {
-    console.log("Chamando deleteProduto para ID:", id)
+    //console.log("Chamando deleteProduto para ID:", id)
     const res = await fetch(`http://localhost:3000/produtos/${id}`, {
         method: "DELETE",
         headers: {
@@ -34,7 +34,7 @@ export const deleteProduto = async (id: number) => {
         },
     })
 
-    console.log("Status da resposta de exclusão:", res.status)
+    //console.log("Status da resposta de exclusão:", res.status)
 
     if (res.status === 204) return null
 
