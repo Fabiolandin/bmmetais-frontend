@@ -110,7 +110,7 @@ const DialogNewCompra = ({ open, onOpenChange, onCreateNewCompra }) => {
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent className="sm:max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>Nova Compra</DialogTitle>
                     <DialogDescription>
@@ -160,7 +160,7 @@ const DialogNewCompra = ({ open, onOpenChange, onCreateNewCompra }) => {
                                 </select>
                             </div>
                             <div className="col-span-2 grid gap-1">
-                                <label className="text-xs font-medium">Qtd</label>
+                                <label className="text-xs font-medium">Quantidade</label>
                                 <Input
                                     type="number"
                                     value={quantidade}
