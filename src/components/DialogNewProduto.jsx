@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "./ui/input"
 import { fetchCategoria } from "@/fetchs/fetchCategoria"
 import { cn } from "@/lib/utils"
+import { toast } from "sonner"
 
 const DialogNewProduto = ({ open, onOpenChange, onCreateNewProduto }) => {
 
@@ -19,7 +20,7 @@ const DialogNewProduto = ({ open, onOpenChange, onCreateNewProduto }) => {
 
     const handleSubmit = async () => {
         if (!categoria_produtoId) {
-            alert("Por favor, selecione uma categoria.")
+            toast("Por favor, selecione uma categoria.")
             return
         }
         try {

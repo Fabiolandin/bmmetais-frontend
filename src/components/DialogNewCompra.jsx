@@ -7,6 +7,7 @@ import { fetchProduto } from "@/fetchs/fetchProduto"
 import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 import { PlusIcon, Trash2Icon } from "lucide-react"
+import { toast } from "sonner"
 
 const DialogNewCompra = ({ open, onOpenChange, onCreateNewCompra }) => {
 
@@ -73,7 +74,7 @@ const DialogNewCompra = ({ open, onOpenChange, onCreateNewCompra }) => {
 
     const handleSubmit = async () => {
         if (!fornecedorId || !funcionarioId || items.length === 0) {
-            alert("Preencha todos os campos e adicione pelo menos um item.")
+            toast("Preencha todos os campos e adicione pelo menos um item.")
             return
         }
 

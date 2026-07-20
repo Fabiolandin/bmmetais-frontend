@@ -6,6 +6,7 @@ import { fetchCliente } from "@/fetchs/fetchCliente"
 import { fetchFuncionario } from "@/fetchs/fetchFuncionario"
 import { fetchProduto } from "@/fetchs/fetchProduto"
 import { Trash2Icon, PlusIcon } from "lucide-react"
+import { toast } from "sonner"
 
 const DialogNewPedido = ({ open, onOpenChange, onCreateNewPedido }) => {
     const [clienteId, setClienteId] = useState("")
@@ -65,7 +66,7 @@ const DialogNewPedido = ({ open, onOpenChange, onCreateNewPedido }) => {
 
     const handleSubmit = async () => {
         if (!clienteId || !funcionarioId || items.length === 0) {
-            alert("Preencha todos os campos e adicione pelo menos um item.")
+            toast("Preencha todos os campos e adicione pelo menos um item.")
             return
         }
 
