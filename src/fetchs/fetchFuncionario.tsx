@@ -1,53 +1,25 @@
+import { apiClient } from "../api/apiClient";
+
 export const fetchFuncionario = async (page: number = 1, limit: number = 7) => {
-    const res = await fetch(`http://localhost:3000/funcionario?page=${page}&limit=${limit}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-    if (res.status !== 200 && res.status !== 201) {
-        throw new Error("Erro ao buscar funcionario")
-    }
-    return await res.json() as { data: any[]; total: number; page: number; totalPages: number }
+    return apiClient<{ data: any[]; total: number; page: number; totalPages: number }>(
+        `/funcionario?page=${page}&limit=${limit}`
+    )
 };
 
 export const createFuncionario = async (nome: string, cpf: string) => {
-    const res = await fetch("http://localhost:3000/funcionario", {
+    return apiClient(`/funcionario/`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ nome, cpf }),
+        body: JSON.stringify({ nome, cpf}),
     })
-    if (res.status !== 200 && res.status !== 201) {
-        throw new Error("Erro ao criar funcionario")
-    }
-    return await res.json()
 };
 
 export const deleteFuncionario = async (id: number) => {
-    const res = await fetch(`http://localhost:3000/funcionario/${id}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-    if (res.status !== 200 && res.status !== 201) {
-        throw new Error("Erro ao deletar funcionario")
-    }
-    return await res.json()
+    return apiClient(`/funcionario/${id}`, {method: "DELETE" })
 };
 
 export const editarFuncionario = async (id: number, nome: string, cpf: string) => {
-    const res = await fetch(`http://localhost:3000/funcionario/${id}`, {
+    return apiClient(`/funcionario/${id}`, {
         method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ nome, cpf }),
+        body: JSON.stringify({ nome, cpf })
     })
-    if (res.status !== 200 && res.status !== 201) {
-        throw new Error("Erro ao editar funcionario")
-    }
-    return await res.json()
 };
