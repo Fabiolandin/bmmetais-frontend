@@ -51,9 +51,10 @@ const Pedido = () => {
     const handleDeletePedido = async (id) => {
         try {
             await deletePedido(id)
+            toast.success("Pedido deletado com sucesso!")
             await getDados(currentPage)
         } catch (error) {
-            console.error("Erro ao deletar pedido:", error)
+            toast.error("Erro ao deletar pedido")
         }
     }
 
