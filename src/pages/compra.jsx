@@ -39,18 +39,20 @@ const Compra = () => {
     const handleCreateNewCompra = async (data) => {
         try {
             await createCompra(data)
+            toast.success("Compra criada com sucesso!")
             getDados(currentPage)
         } catch (error) {
-            console.error("Erro ao criar compra:", error)
+            toast.error("Erro ao criar compra")
         }
     }
 
     const handleDeleteCompra = async (id) => {
         try {
             await deleteCompra(id)
+            toast.success("Compra deletada com sucesso!")
             getDados(currentPage)
         } catch (error) {
-            console.error("Erro ao deletar compra:", error)
+            toast.error("Erro ao deletar compra")
         }
     }
 
