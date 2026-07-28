@@ -90,13 +90,22 @@ const Main = () => {
 
                             <Tooltip
                                 allowEscapeViewBox={{ x: false, y: false }}
-                                formatter={(value) => [
-                                    new Intl.NumberFormat('pt-BR', {
-                                        style: 'currency',
-                                        currency: 'BRL'
-                                    }).format(value),
-                                    'Faturamento'
-                                ]}
+                                formatter={(value, name, props) => {
+                                    //Verifica qual linha esta sendo exibida pelo nome
+                                    if(name === "Total de Pedidos"){
+                                        return [value, 'Total de Pedidos']
+                                    }
+                                    if(name === "Faturamento"){
+                                        return [
+                                            new Intl.NumberFormat('pt-BR', {
+                                                style: 'currency',
+                                                currency: 'BRL'
+                                            }).format(value),
+                                            'Faturamento'
+                                        ]
+                                    }
+                                    return [value, name]
+                                }}
                             />
 
                             <Legend />
