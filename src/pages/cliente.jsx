@@ -8,6 +8,7 @@ import { toast } from "sonner"
 import DialogNewCliente from "@/components/DialogNewCliente";
 import DialogClienteDetails from "@/components/DialogClienteDetails";
 import { formatarTelefone } from "@/utils/formaters/telefone";
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 
 const LIMIT = 7;
 
@@ -102,13 +103,14 @@ const Cliente = () => {
                             </div>
                             <EyeIcon
                                 size={25}
-                                className="ml-auto text-gray-500"
+                                className="ml-auto text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
                                 onClick={() => handleDialogDetailsOpen(cliente)}
                             />
-                            <Trash2Icon
-                                size={23}
-                                className="text-red-500"
-                                onClick={() => deleteCliente(cliente.id)}
+                            <ConfirmDeleteDialog
+                                trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
+                                titulo={cliente.nome}
+                                descricao="Cliente"
+                                funcao={() => deleteCliente(cliente.id)}
                             />
                         </Card>
                     </CardContent>
