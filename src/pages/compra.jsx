@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import DialogNewCompra from "@/components/DialogNewCompra"
 import { DialogCompraDetails } from "@/components/DialogCompraDetails"
 import { toast } from "sonner"
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog"
 
 const LIMIT = 7;
 
@@ -83,19 +84,20 @@ const Compra = () => {
                                     <div className="font-semibold text-gray-900">R$ {total.toFixed(2)}</div>
                                     <div className="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Total</div>
                                 </div>
-                                <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                                <div className="flex gap-2">
                                     <EyeIcon
                                         size={22}
-                                        className="text-gray-400 hover:text-blue-500 transition-colors"
+                                        className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
                                         onClick={() => {
                                             setCompraSelecionada(compras)
                                             setOpenCompraDetails(true)
                                         }}
                                     />
-                                    <Trash2Icon
-                                        size={20}
-                                        className="text-red-300 hover:text-red-600 transition-colors"
-                                        onClick={() => handleDeleteCompra(compras.id)}
+                                    <ConfirmDeleteDialog
+                                        trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
+                                        titulo={compras.nome}
+                                        descricao="Cliente"
+                                        funcao={() => handleDeleteCompra(compras.id)}
                                     />
                                 </div>
                             </Card>
