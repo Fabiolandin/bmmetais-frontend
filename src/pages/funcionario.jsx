@@ -1,3 +1,4 @@
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import DialogFuncionarioDetails from "@/components/DialogFuncionarioDetails";
 import DialogNewFuncionario from "@/components/DialogNewFuncionario";
 import Sidebar from "@/components/Sidebar"
@@ -102,13 +103,14 @@ const Funcionario = () => {
                             </div>
                             <EyeIcon
                                 size={25}
-                                className="ml-auto text-gray-500"
+                                className="ml-auto text-gray-500 hover:text-gray-600 transition-colors cursor-pointer"
                                 onClick={() => handleDialogDetailsOpen(funcionario)}
                             />
-                            <Trash2Icon
-                                size={23}
-                                className="text-red-500"
-                                onClick={() => handleDeleteFuncionario(funcionario.id)}
+                            <ConfirmDeleteDialog
+                                trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
+                                titulo={funcionario.nome}
+                                descricao="Cliente"
+                                funcao={() => handleDeleteFuncionario(funcionario.id)}
                             />
                         </Card>
                     </CardContent>
