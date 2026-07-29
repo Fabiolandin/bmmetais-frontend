@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import DialogNewPedido from "@/components/DialogNewPedido"
 import DialogPedidoDetails from "@/components/DialogPedidoDetails"
 import { toast } from "sonner"
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog"
 
 const LIMIT = 7
 
@@ -90,16 +91,17 @@ const Pedido = () => {
                                 <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                                     <EyeIcon
                                         size={22}
-                                        className="text-gray-400 hover:text-blue-500 transition-colors"
+                                        className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
                                         onClick={() => {
                                             setPedidoSelecionado(pedido)
                                             setOpenDetails(true)
                                         }}
                                     />
-                                    <Trash2Icon
-                                        size={20}
-                                        className="text-red-300 hover:text-red-600 transition-colors"
-                                        onClick={() => handleDeletePedido(pedido.id)}
+                                    <ConfirmDeleteDialog
+                                        trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
+                                        titulo={pedido.nome}
+                                        descricao="Cliente"
+                                        funcao={() => handleDeletePedido(pedido.id)}
                                     />
                                 </div>
                             </Card>
