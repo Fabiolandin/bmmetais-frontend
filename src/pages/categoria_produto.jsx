@@ -7,6 +7,7 @@ import DialogCategoriaProduto from "@/components/DialogCategoriaNewProduto"
 import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, Trash2Icon } from "lucide-react"
 import DialogCategoriaProdutoDetails from "@/components/DialogCategoriaProdutoDetails"
 import { toast } from "sonner"
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog"
 
 const LIMIT = 7;
 
@@ -93,13 +94,14 @@ const CategoriaProduto = () => {
                             {categoria.nome}
                             <EyeIcon
                                 size={25}
-                                className="ml-auto text-gray-500"
+                                className="ml-auto text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
                                 onClick={() => handleDialogOpen(categoria)}
                             />
-                            <Trash2Icon
-                                size={23}
-                                className="text-red-500"
-                                onClick={() => deleteCategoriaProduto(categoria.id)}
+                            <ConfirmDeleteDialog 
+                                trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer"/>}
+                                titulo={categoria.nome}
+                                descricao="Categoria de produto"
+                                funcao={() => deleteCategoriaProduto(categoria.id)}
                             />
                         </Card>
                     </CardContent>
