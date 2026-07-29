@@ -1,4 +1,5 @@
 
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import DialogFornecedorDetails from "@/components/DialogFornecedorDetails";
 import DialogNewFornecedor from "@/components/DialogNewFornecedor";
 import Sidebar from "@/components/Sidebar"
@@ -107,13 +108,14 @@ const Fornecedor = () => {
 
                             <EyeIcon
                                 size={25}
-                                className="ml-auto text-gray-500"
+                                className="ml-auto text-gray-500 hover:text-gray-600 transition-colors cursor-pointer"
                                 onClick={() => handleDialogDetailsOpen(fornecedor)}
                             />
-                            <Trash2Icon
-                                size={23}
-                                className="text-red-500"
-                                onClick={() => handleDeleteFornecedor(fornecedor.id)}
+                            <ConfirmDeleteDialog
+                                trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
+                                titulo={fornecedor.nome}
+                                descricao="Cliente"
+                                funcao={() => handleDeleteFornecedor(fornecedor.id)}
                             />
                         </Card>
                     </CardContent>
