@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import DialogNewProduto from "@/components/DialogNewProduto";
 import DialogProdutoDetails from "@/components/DialogProdutoDetails";
 import { toast } from "sonner";
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 
 const LIMIT = 7;
 
@@ -59,8 +60,7 @@ const Produto = () => {
         }
     }
 
-    const handleDeleteProduto = async (e, id) => {
-        e.stopPropagation()
+    const handleDeleteProduto = async (id) => {
         try {
             await deleteProduto(id)
             await getDados(currentPage)
@@ -104,17 +104,19 @@ const Produto = () => {
                             <div className="flex gap-2 items-center justify-center align-center">
                                 <EyeIcon
                                     size={25}
-                                    className="text-gray-500 cursor-pointer hover:text-blue-500"
+                                    className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
                                     onClick={() => {
                                         setProdutoSelecionado(produto)
                                         setOpenDetails(true)
                                     }}
                                 />
-                                <Trash2Icon
-                                    size={23}
-                                    className="text-red-500 hover:text-red-700 cursor-pointer"
-                                    onClick={(e) => handleDeleteProduto(e, produto.id)}
+                                <ConfirmDeleteDialog
+                                    trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
+                                    titulo={produto.nome}
+                                    descricao="Produto"
+                                    funcao={() => handleDeleteProduto(produto.id)}
                                 />
+
                             </div>
                         </Card>
                     </CardContent>
