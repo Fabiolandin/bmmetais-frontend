@@ -20,6 +20,9 @@ const Produto = () => {
     const [totalPages, setTotalPages] = useState(1)
     const [total, setTotal] = useState(0)
 
+    //State para loading
+    const [isLoading, setIsLoading] = useState(false)
+
     //state para abrir dialog de new produto e produto details
     const [open, setOpen] = useState(false)
     const [openDetails, setOpenDetails] = useState(false)
@@ -28,6 +31,7 @@ const Produto = () => {
 
 
     const getDados = async (page = currentPage) => {
+        setIsLoading(true)
         try {
             const dados = await fetchProduto(page, LIMIT)
             setListaProduto(dados.data)
@@ -36,6 +40,8 @@ const Produto = () => {
             setTotal(dados.total)
         } catch (error) {
             console.error("Erro ao buscar produtos:", error)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -84,43 +90,52 @@ const Produto = () => {
                     <CardTitle>Produtos Cadastrados</CardTitle>
                     <Button variant="outline" className="ml-auto" onClick={() => setOpen(true)}>Novo produto</Button>
                 </CardHeader>
-                {listaProduto.map((produto) => (
-                    <CardContent key={produto.id}>
-                        <Card
-                            className="p-4 hover:bg-gray-100 shadow flex flex-row items-center gap-4"
-                        >
-                            <div className="flex-1">{produto.nome}
-                                <div className="flex gap-1 items-center">
-                                    <BoxIcon size={15} className="text-gray-500 " />
-                                    <p className="text-xs text-muted-foreground">Estoque: {produto.estoque}</p>
+                {/* Loading */}
+                {isLoading ? (
+                    <p className="text-center text-muted-foreground py-8">Carregando produtos...</p>
+                ) : listaProduto.length === 0 ? (
+                    <p className="text-center text-muted-foreground py-8">Nenhum produto cadastrado...</p>
+                ) : (
+                    listaProduto.map((produto) => (
+                        <CardContent key={produto.id}>
+                            <Card
+                                className="p-4 hover:bg-gray-100 shadow flex flex-row items-center gap-4"
+                            >
+                                <div className="flex-1">{produto.nome}
+                                    <div className="flex gap-1 items-center">
+                                        <BoxIcon size={15} className="text-gray-500 " />
+                                        <p className="text-xs text-muted-foreground">Estoque: {produto.estoque}</p>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="text-right mr-4">
-                                <div className="font-semibold text-gray-900">R$ {produto.preco.toFixed(2)}</div>
-                                <div className="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Valor unitário</div>
-                            </div>
+                                <div className="text-right mr-4">
+                                    <div className="font-semibold text-gray-900">R$ {produto.preco.toFixed(2)}</div>
+                                    <div className="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Valor unitário</div>
+                                </div>
 
-                            <div className="flex gap-2 items-center justify-center align-center">
-                                <EyeIcon
-                                    size={25}
-                                    className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-                                    onClick={() => {
-                                        setProdutoSelecionado(produto)
-                                        setOpenDetails(true)
-                                    }}
-                                />
-                                <ConfirmDeleteDialog
-                                    trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
-                                    titulo={produto.nome}
-                                    descricao="Produto"
-                                    funcao={() => handleDeleteProduto(produto.id)}
-                                />
+                                <div className="flex gap-2 items-center justify-center align-center">
+                                    <EyeIcon
+                                        size={25}
+                                        className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                                        onClick={() => {
+                                            setProdutoSelecionado(produto)
+                                            setOpenDetails(true)
+                                        }}
+                                    />
+                                    <ConfirmDeleteDialog
+                                        trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
+                                        titulo={produto.nome}
+                                        descricao="Produto"
+                                        funcao={() => handleDeleteProduto(produto.id)}
+                                    />
 
-                            </div>
-                        </Card>
-                    </CardContent>
-                ))}
+                                </div>
+                            </Card>
+                        </CardContent>
+                    ))
+
+                )}
+
                 {/* Controles de paginação */}
                 <div className="flex items-center justify-center gap-4 py-4">
                     <Button
