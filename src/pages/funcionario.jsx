@@ -20,6 +20,9 @@ const Funcionario = () => {
     const [totalPages, setTotalPages] = useState(1)
     const [total, setTotal] = useState(0)
 
+    //State para loading
+    const [isLoading, setIsLoading] = useState(false)
+
     //State para abrir dialogs
     const [open, setOpen] = useState()
     const [openDetails, setOpenDetails] = useState()
@@ -27,11 +30,19 @@ const Funcionario = () => {
     const [funcionarioSelecionado, setfuncionarioSelecionado] = useState()
 
     const getDados = async (page = currentPage) => {
-        const resposta = await fetchFuncionario(page, LIMIT)
-        setListaFuncionario(resposta.data)
-        setTotalPages(resposta.totalPages)
-        setTotal(resposta.total)
-        setCurrentPage(resposta.page)
+        setIsLoading(true)
+        try {
+            const resposta = await fetchFuncionario(page, LIMIT)
+            setListaFuncionario(resposta.data)
+            setCurrentPage(resposta.page)
+            setTotalPages(resposta.totalPages)
+            setTotal(resposta.total)
+
+        } catch (error) {
+            console.log("Erro ao buscar funcionarios:", error)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const criarFuncionario = async (nome, cpf) => {
@@ -90,31 +101,38 @@ const Funcionario = () => {
                     <CardTitle>Funcionários Cadastrados</CardTitle>
                     <Button variant="outline" className="ml-auto" onClick={() => setOpen(true)}>Novo funcionário</Button>
                 </CardHeader>
-                {listaFuncionario.map((funcionario) => (
-                    <CardContent key={funcionario.id}>
-                        <Card
-                            className="p-4 hover:bg-gray-100 shadow flex-row"
-                        >
-                            <div className="flex-1">{funcionario.nome}
-                                <div className="flex gap-1 items-center">
-                                    <UserIcon size={15} className="text-gray-500 " />
-                                    <p className="text-xs text-muted-foreground">CPF: {formatarCpfCnpj(funcionario.cpf)}</p>
+                {/* Loading */}
+                {isLoading ? (
+                    <p className="text-center text-muted-foreground py-8">Carregando funcionarios...</p>
+                ) : listaFuncionario.length === 0 ? (
+                    <p className="text-center text-muted-foreground py-8">Nenhum funcionario cadastrado...</p>
+                ) : (
+                    listaFuncionario.map((funcionario) => (
+                        <CardContent key={funcionario.id}>
+                            <Card
+                                className="p-4 hover:bg-gray-100 shadow flex-row"
+                            >
+                                <div className="flex-1">{funcionario.nome}
+                                    <div className="flex gap-1 items-center">
+                                        <UserIcon size={15} className="text-gray-500 " />
+                                        <p className="text-xs text-muted-foreground">CPF: {formatarCpfCnpj(funcionario.cpf)}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <EyeIcon
-                                size={25}
-                                className="ml-auto text-gray-500 hover:text-gray-600 transition-colors cursor-pointer"
-                                onClick={() => handleDialogDetailsOpen(funcionario)}
-                            />
-                            <ConfirmDeleteDialog
-                                trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
-                                titulo={funcionario.nome}
-                                descricao="Cliente"
-                                funcao={() => handleDeleteFuncionario(funcionario.id)}
-                            />
-                        </Card>
-                    </CardContent>
-                ))}
+                                <EyeIcon
+                                    size={25}
+                                    className="ml-auto text-gray-500 hover:text-gray-600 transition-colors cursor-pointer"
+                                    onClick={() => handleDialogDetailsOpen(funcionario)}
+                                />
+                                <ConfirmDeleteDialog
+                                    trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
+                                    titulo={funcionario.nome}
+                                    descricao="Cliente"
+                                    funcao={() => handleDeleteFuncionario(funcionario.id)}
+                                />
+                            </Card>
+                        </CardContent>
+                    ))
+                )}
 
                 {/* Controles de paginação */}
                 <div className="flex items-center justify-center gap-4 py-4">
