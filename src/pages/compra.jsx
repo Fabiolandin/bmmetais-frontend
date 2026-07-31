@@ -19,21 +19,28 @@ const Compra = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [total, setTotal] = useState(0);
 
+    //State para loading
+    const [isLoading, setIsLoading] = useState(false)
+
     //states para abrir dialogs
     const [openNewCompra, setOpenNewCompra] = useState(false)
     const [openCompraDetails, setOpenCompraDetails] = useState(false)
+
     const [compraSelecionada, setCompraSelecionada] = useState(null)
 
 
     const getDados = async (page = currentPage) => {
+        setIsLoading(true)
         try {
             const resposta = await fetchCompras(page, LIMIT)
             setListaCompras(resposta.data)
+            setCurrentPage(resposta.page)
             setTotalPages(resposta.totalPages)
             setTotal(resposta.total)
-            setCurrentPage(resposta.page)
         } catch (error) {
             toast.error("Erro ao buscar compras")
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -70,40 +77,47 @@ const Compra = () => {
                     <CardTitle>Compras Cadastradas</CardTitle>
                     <Button variant="outline" className="ml-auto" onClick={() => setOpenNewCompra(true)}>Nova Compra</Button>
                 </CardHeader>
-                {listaCompras.map((compras) => {
-                    const total = compras.items?.reduce((acc, item) => acc + (item.quantidade * item.preco_unitario), 0) ?? 0
-                    return (
-                        <CardContent key={compras.id}>
-                            <Card className="p-4 hover:bg-gray-50 shadow-sm border flex flex-row items-center gap-4 cursor-pointer transition-colors">
-                                <div className="font-bold text-blue-600 w-12">#{compras.id}</div>
-                                <div className="flex-1">
-                                    <div className="font-medium">{compras.fornecedor?.nome}</div>
-                                    <div className="text-sm text-gray-600">{compras.funcionario?.nome}</div>
-                                </div>
-                                <div className="text-right mr-4">
-                                    <div className="font-semibold text-gray-900">R$ {total.toFixed(2)}</div>
-                                    <div className="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Total</div>
-                                </div>
-                                <div className="flex gap-2">
-                                    <EyeIcon
-                                        size={22}
-                                        className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-                                        onClick={() => {
-                                            setCompraSelecionada(compras)
-                                            setOpenCompraDetails(true)
-                                        }}
-                                    />
-                                    <ConfirmDeleteDialog
-                                        trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
-                                        titulo={compras.nome}
-                                        descricao="Cliente"
-                                        funcao={() => handleDeleteCompra(compras.id)}
-                                    />
-                                </div>
-                            </Card>
-                        </CardContent>
-                    )
-                })}
+                {/* Loading */}
+                {isLoading ? (
+                    <p className="text-center text-muted-foreground py-8">Carregando compras...</p>
+                ) : listaCompras.length === 0 ? (
+                    <p className="text-center text-muted-foreground py-8">Nenhuma compra cadastrada...</p>
+                ) : (
+                    listaCompras.map((compras) => {
+                        const total = compras.items?.reduce((acc, item) => acc + (item.quantidade * item.preco_unitario), 0) ?? 0
+                        return (
+                            <CardContent key={compras.id}>
+                                <Card className="p-4 hover:bg-gray-50 shadow-sm border flex flex-row items-center gap-4 cursor-pointer transition-colors">
+                                    <div className="font-bold text-blue-600 w-12">#{compras.id}</div>
+                                    <div className="flex-1">
+                                        <div className="font-medium">{compras.fornecedor?.nome}</div>
+                                        <div className="text-sm text-gray-600">{compras.funcionario?.nome}</div>
+                                    </div>
+                                    <div className="text-right mr-4">
+                                        <div className="font-semibold text-gray-900">R$ {total.toFixed(2)}</div>
+                                        <div className="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Total</div>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <EyeIcon
+                                            size={22}
+                                            className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                                            onClick={() => {
+                                                setCompraSelecionada(compras)
+                                                setOpenCompraDetails(true)
+                                            }}
+                                        />
+                                        <ConfirmDeleteDialog
+                                            trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
+                                            titulo={compras.nome}
+                                            descricao="Cliente"
+                                            funcao={() => handleDeleteCompra(compras.id)}
+                                        />
+                                    </div>
+                                </Card>
+                            </CardContent>
+                        )
+                    })
+                )}
 
                 {/* Controles de paginação */}
                 <div className="flex items-center justify-center gap-4 py-4">
