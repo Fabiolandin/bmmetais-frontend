@@ -21,6 +21,9 @@ const Cliente = () => {
     const [totalPages, setTotalPages] = useState(1)
     const [total, setTotal] = useState(0)
 
+    //State para loading
+    const [isLoading, setIsLoading] = useState(false)
+
     //state para abrir dialog de new cliente e cliente details
     const [open, setOpen] = useState(false)
     const [openDetails, setOpenDetails] = useState(false)
@@ -30,11 +33,18 @@ const Cliente = () => {
 
     //função para buscar os dados (lista de clientes)
     const getDados = async (page = currentPage) => {
-        const resposta = await fetchCliente(page, LIMIT)
-        setListaCliente(resposta.data)
-        setTotalPages(resposta.totalPages)
-        setTotal(resposta.total)
-        setCurrentPage(resposta.page)
+        setIsLoading(true)
+        try {
+            const resposta = await fetchCliente(page, LIMIT)
+            setListaCliente(resposta.data)
+            setCurrentPage(resposta.page)
+            setTotalPages(resposta.totalPages)
+            setTotal(resposta.total)
+        } catch (error) {
+            console.log("Erro ao buscar clientes:", error)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const handleCreateNewCliente = async (nome, cpf, telefone, email) => {
@@ -88,33 +98,40 @@ const Cliente = () => {
                     <CardTitle>Clientes Cadastrados</CardTitle>
                     <Button variant="outline" className="ml-auto" onClick={() => setOpen(true)}>Novo cliente</Button>
                 </CardHeader>
-                {listaCliente.map((cliente) => (
-                    <CardContent key={cliente.id}>
-                        <Card
-                            className="p-4 hover:bg-gray-100 shadow flex-row"
-                        >
-                            <div className="flex-1">{cliente.nome}
-                                <div className="flex gap-1 items-center">
-                                    <UserIcon size={15} className="text-gray-500 " />
-                                    <p className="text-xs text-muted-foreground">Email: {cliente.email}</p>
-                                    <Phone size={15} className="text-gray-500 ml-3" />
-                                    <p className="text-xs text-muted-foreground">Telefone: {formatarTelefone(cliente.telefone)}</p>
+                {/* Loading */}
+                {isLoading ? (
+                    <p className="text-center text-muted-foreground py-8">Carregando clientes...</p>
+                ) : listaCliente.length === 0 ? (
+                    <p className="text-center text-muted-foreground py-8">Nenhum cliente cadastrado...</p>
+                ) : (
+                    listaCliente.map((cliente) => (
+                        <CardContent key={cliente.id}>
+                            <Card
+                                className="p-4 hover:bg-gray-100 shadow flex-row"
+                            >
+                                <div className="flex-1">{cliente.nome}
+                                    <div className="flex gap-1 items-center">
+                                        <UserIcon size={15} className="text-gray-500 " />
+                                        <p className="text-xs text-muted-foreground">Email: {cliente.email}</p>
+                                        <Phone size={15} className="text-gray-500 ml-3" />
+                                        <p className="text-xs text-muted-foreground">Telefone: {formatarTelefone(cliente.telefone)}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <EyeIcon
-                                size={25}
-                                className="ml-auto text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-                                onClick={() => handleDialogDetailsOpen(cliente)}
-                            />
-                            <ConfirmDeleteDialog
-                                trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
-                                titulo={cliente.nome}
-                                descricao="Cliente"
-                                funcao={() => deleteCliente(cliente.id)}
-                            />
-                        </Card>
-                    </CardContent>
-                ))}
+                                <EyeIcon
+                                    size={25}
+                                    className="ml-auto text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                                    onClick={() => handleDialogDetailsOpen(cliente)}
+                                />
+                                <ConfirmDeleteDialog
+                                    trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
+                                    titulo={cliente.nome}
+                                    descricao="Cliente"
+                                    funcao={() => deleteCliente(cliente.id)}
+                                />
+                            </Card>
+                        </CardContent>
+                    ))
+                )}
                 {/* Controles de paginação */}
                 <div className="flex items-center justify-center gap-4 py-4">
                     <Button
