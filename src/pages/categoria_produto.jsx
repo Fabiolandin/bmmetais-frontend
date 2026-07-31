@@ -20,6 +20,9 @@ const CategoriaProduto = () => {
     const [totalPages, setTotalPages] = useState(1)
     const [total, setTotal] = useState(0)
 
+    //State para loading
+    const [isLoading, setIsLoading] = useState(false)
+
     //states para setar abrie e fechar de dialogs
     const [open, setOpen] = useState(false)
     const [openDetails, setOpenDetails] = useState(false)
@@ -27,11 +30,18 @@ const CategoriaProduto = () => {
     const [categoriaSelecionada, setCategoriaSelecionada] = useState(null)
 
     const getDados = async (page = currentPage) => {
-        const dados = await fetchCategoria(page, LIMIT)
-        setListaCategoria(dados.data)
-        setTotalPages(dados.totalPages)
-        setTotal(dados.total)
-        setCurrentPage(dados.page)
+        setIsLoading(true)
+        try{
+            const dados = await fetchCategoria(page, LIMIT)
+            setListaCategoria(dados.data)
+            setCurrentPage(dados.page)
+            setTotalPages(dados.totalPages)
+            setTotal(dados.total)
+        } catch (error){
+            console.log("Erro ao buscar categoria de produtos:", error)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const criarCategoriaProduto = async (nome) => {
@@ -86,26 +96,33 @@ const CategoriaProduto = () => {
                     <CardTitle>Categoria de produtos cadastradas</CardTitle>
                     <Button variant="outline" className="ml-auto" onClick={() => setOpen(true)}>Nova categoria</Button>
                 </CardHeader>
-                {listaCategoria.map((categoria) => (
-                    <CardContent key={categoria.id}>
-                        <Card
-                            className="p-4 hover:bg-gray-100 shadow flex-row"
-                        >
-                            {categoria.nome}
-                            <EyeIcon
-                                size={25}
-                                className="ml-auto text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-                                onClick={() => handleDialogOpen(categoria)}
-                            />
-                            <ConfirmDeleteDialog 
-                                trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer"/>}
-                                titulo={categoria.nome}
-                                descricao="Categoria de produto"
-                                funcao={() => deleteCategoriaProduto(categoria.id)}
-                            />
-                        </Card>
-                    </CardContent>
-                ))}
+                {/* Loading */}
+                {isLoading ? (
+                    <p className="text-center text-muted-foreground py-8">Carregando Categoria de produtos...</p>
+                ) : listaCategoria.length === 0 ? (
+                    <p className="text-center text-muted-foreground py-8">Nenhuma Categoria de produto cadastrado...</p>
+                ) : (
+                    listaCategoria.map((categoria) => (
+                        <CardContent key={categoria.id}>
+                            <Card
+                                className="p-4 hover:bg-gray-100 shadow flex-row"
+                            >
+                                {categoria.nome}
+                                <EyeIcon
+                                    size={25}
+                                    className="ml-auto text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                                    onClick={() => handleDialogOpen(categoria)}
+                                />
+                                <ConfirmDeleteDialog
+                                    trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
+                                    titulo={categoria.nome}
+                                    descricao="Categoria de produto"
+                                    funcao={() => deleteCategoriaProduto(categoria.id)}
+                                />
+                            </Card>
+                        </CardContent>
+                    ))
+                )}
                 {/* Controles de paginação */}
                 <div className="flex items-center justify-center gap-4 py-4">
                     <Button
