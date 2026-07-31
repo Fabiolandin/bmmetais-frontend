@@ -23,6 +23,9 @@ const Fornecedor = () => {
     const [totalPages, setTotalPages] = useState(1)
     const [total, setTotal] = useState(0)
 
+    //State para loading
+    const [isLoading, setIsLoading] = useState(false)
+
     //state para abrir dialogs
     const [open, setOpen] = useState(false)
     const [openDetails, setOpenDetails] = useState(false)
@@ -36,11 +39,18 @@ const Fornecedor = () => {
     }
 
     const getDados = async (page = currentPage) => {
-        const resposta = await fetchFornecedor(page, LIMIT)
-        setListaFornecedor(resposta.data)
-        setTotalPages(resposta.totalPages)
-        setTotal(resposta.total)
-        setCurrentPage(resposta.page)
+        setIsLoading(true)
+        try {
+            const resposta = await fetchFornecedor(page, LIMIT)
+            setListaFornecedor(resposta.data)
+            setCurrentPage(resposta.page)
+            setTotalPages(resposta.totalPages)
+            setTotal(resposta.total)
+        } catch (error) {
+            console.log("Erro ao buscar fornecedores:", error)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
 
@@ -92,34 +102,41 @@ const Fornecedor = () => {
                     <CardTitle>Fornecedores Cadastrados</CardTitle>
                     <Button variant="outline" className="ml-auto" onClick={() => setOpen(true)}>Novo fornecedor</Button>
                 </CardHeader>
-                {listaFornecedor.map((fornecedor) => (
-                    <CardContent key={fornecedor.id}>
-                        <Card
-                            className="p-4 hover:bg-gray-100 shadow flex-row"
-                        >
-                            <div className="flex-1">{fornecedor.nome}
-                                <div className="flex gap-1 items-center">
-                                    <IdCardIcon size={15} className="text-gray-500 " />
-                                    <p className="text-xs text-muted-foreground">CNPJ: {formatarCpfCnpj(fornecedor.cnpj)}</p>
-                                    <Phone size={15} className="text-gray-500 ml-3" />
-                                    <p className="text-xs text-muted-foreground">Telefone: {formatarTelefone(fornecedor.telefone)}</p>
+                {/* Loading */}
+                {isLoading ? (
+                    <p className="text-center text-muted-foreground py-8">Carregando fornecedores...</p>
+                ) : listaFornecedor.length === 0 ? (
+                    <p className="text-center text-muted-foreground py-8">Nenhum fornecedor cadastrado...</p>
+                ) : (
+                    listaFornecedor.map((fornecedor) => (
+                        <CardContent key={fornecedor.id}>
+                            <Card
+                                className="p-4 hover:bg-gray-100 shadow flex-row"
+                            >
+                                <div className="flex-1">{fornecedor.nome}
+                                    <div className="flex gap-1 items-center">
+                                        <IdCardIcon size={15} className="text-gray-500 " />
+                                        <p className="text-xs text-muted-foreground">CNPJ: {formatarCpfCnpj(fornecedor.cnpj)}</p>
+                                        <Phone size={15} className="text-gray-500 ml-3" />
+                                        <p className="text-xs text-muted-foreground">Telefone: {formatarTelefone(fornecedor.telefone)}</p>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <EyeIcon
-                                size={25}
-                                className="ml-auto text-gray-500 hover:text-gray-600 transition-colors cursor-pointer"
-                                onClick={() => handleDialogDetailsOpen(fornecedor)}
-                            />
-                            <ConfirmDeleteDialog
-                                trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
-                                titulo={fornecedor.nome}
-                                descricao="Cliente"
-                                funcao={() => handleDeleteFornecedor(fornecedor.id)}
-                            />
-                        </Card>
-                    </CardContent>
-                ))}
+                                <EyeIcon
+                                    size={25}
+                                    className="ml-auto text-gray-500 hover:text-gray-600 transition-colors cursor-pointer"
+                                    onClick={() => handleDialogDetailsOpen(fornecedor)}
+                                />
+                                <ConfirmDeleteDialog
+                                    trigger={<Trash2Icon size={23} className="text-red-400 hover:text-red-600 transition-colors cursor-pointer" />}
+                                    titulo={fornecedor.nome}
+                                    descricao="Cliente"
+                                    funcao={() => handleDeleteFornecedor(fornecedor.id)}
+                                />
+                            </Card>
+                        </CardContent>
+                    ))
+                )}
                 {/* Controles de paginação */}
                 <div className="flex items-center justify-center gap-4 py-4">
                     <Button
