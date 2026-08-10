@@ -11,21 +11,68 @@ import Compra from './pages/compra'
 import Funcionario from './pages/funcionario'
 import Cliente from './pages/cliente'
 import Pedido from './pages/pedido'
+import { AuthProvider } from './context/AuthContext'
+import Login from './pages/login.jsx'
+import ProtectedRoute from './components/ProtectedRoute.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+    <AuthProvider>
       <Routes>
-        <Route path='/' element={<App />} />
-        <Route path='/categoria-produto' element={<CategoriaProduto />} />
-        <Route path='/produtos' element={<Produto />} />
-        <Route path='/fornecedores' element={<Fornecedor />} />
-        <Route path='/compras' element={<Compra />} />
-        <Route path='/funcionarios' element={<Funcionario />} />
-        <Route path='/clientes' element={<Cliente />} />
-        <Route path='/pedidos' element={<Pedido />} />
+        <Route path='/login' element={<Login />} />
+
+        <Route path='/' element={
+          <ProtectedRoute>
+          <App />
+          </ProtectedRoute>
+          } />
+
+        <Route path='/categoria-produto' element={
+          <ProtectedRoute>
+          <CategoriaProduto />
+          </ProtectedRoute>
+          } />
+
+        <Route path='/produtos' element={
+          <ProtectedRoute>
+          <Produto />
+          </ProtectedRoute>
+          } />
+
+        <Route path='/fornecedores' element={
+          <ProtectedRoute>
+          <Fornecedor />
+          </ProtectedRoute>
+          } />
+
+        <Route path='/compras' element={
+          <ProtectedRoute>
+          <Compra />
+          </ProtectedRoute>
+          } />
+
+        <Route path='/funcionarios' element={
+          <ProtectedRoute>
+          <Funcionario />
+          </ProtectedRoute>
+          } />
+
+        <Route path='/clientes' element={
+          <ProtectedRoute>
+          <Cliente />
+          </ProtectedRoute>
+          } />
+
+        <Route path='/pedidos' element={
+          <ProtectedRoute>
+          <Pedido />
+          </ProtectedRoute>
+          } />
+
       </Routes>
       <Toaster />
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>
 )
