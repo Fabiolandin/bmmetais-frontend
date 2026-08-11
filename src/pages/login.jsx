@@ -8,11 +8,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
 const Login = () => {
+    //state para receber email, senha e o loading
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
+    //desestructuring com renomeação para não confundir com a função login do fetch e puxando somente a função login do auth
     const { login: setAuthToken } = useAuth();
+
+    //para redirecionamento
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {

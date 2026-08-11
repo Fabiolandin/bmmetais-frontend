@@ -22,8 +22,8 @@ export async function apiClient<T>(
     });
 
     if (res.status === 401) {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
+        localStorage.removeItem("token"); //remove o token do localstorage
+        window.location.href = "/login"; //força um reload para a pagina de login
         throw new Error("Sessão expirada");
       }
 
