@@ -6,10 +6,10 @@ export const fetchFuncionario = async (page: number = 1, limit: number = 7) => {
     )
 };
 
-export const createFuncionario = async (nome: string, cpf: string) => {
+export const createFuncionario = async (nome: string, cpf: string, email:string, senha:string) => {
     return apiClient(`/funcionario/`, {
         method: "POST",
-        body: JSON.stringify({ nome, cpf}),
+        body: JSON.stringify({ nome, cpf, email, senha}),
     })
 };
 

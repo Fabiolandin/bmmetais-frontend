@@ -7,12 +7,16 @@ import { useState } from "react"
 const DialogNewFuncionario = ({ open, setOpen, onCreateFuncionario }) => {
     const [nome, setNome] = useState("")
     const [cpf, setCpf] = useState("")
+    const [email, setEmail] = useState("")
+    const [senha, setSenha] = useState("")
 
     const handleSubmit = async () => {
         try {
-            await onCreateFuncionario(nome, cpf.replace(/\D/g, ''))
+            await onCreateFuncionario(nome, cpf.replace(/\D/g, ''), email, senha)
             setNome("")
             setCpf("")
+            setEmail("")
+            setSenha("")
             setOpen(false)
         } catch (error) {
             toast.error("Erro ao cadastrar funcionário!", error)
@@ -37,6 +41,10 @@ const DialogNewFuncionario = ({ open, setOpen, onCreateFuncionario }) => {
                             <Input value={nome} onChange={(e) => setNome(e.target.value)} type="text" id="nome" name="nome" />
                             <label htmlFor="cpf">CPF</label>
                             <Input value={cpf} onChange={(e) => setCpf(e.target.value)} type="text" id="cpf" name="cpf" />
+                            <label htmlFor="email">Email</label>
+                            <Input value={email} onChange={(e) => setEmail(e.target.value)} type="text" id="email" name="email" />
+                            <label htmlFor="senha">Senha</label>
+                            <Input value={senha} onChange={(e) => setSenha(e.target.value)} type="password" id="senha" name="senha" />
                         </div>
 
                     </form>

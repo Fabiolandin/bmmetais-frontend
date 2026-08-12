@@ -45,9 +45,9 @@ const Funcionario = () => {
         }
     }
 
-    const criarFuncionario = async (nome, cpf) => {
+    const criarFuncionario = async (nome, cpf, email, senha) => {
         try {
-            await createFuncionario(nome, cpf)
+            await createFuncionario(nome, cpf, email, senha)
             toast.success("Funcionário criado com sucesso!")
             await getDados(currentPage)
         } catch (error) {
