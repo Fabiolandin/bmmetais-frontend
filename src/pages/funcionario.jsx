@@ -109,9 +109,7 @@ const Funcionario = () => {
                 ) : (
                     listaFuncionario.map((funcionario) => (
                         <CardContent key={funcionario.id}>
-                            <Card
-                                className="p-4 hover:bg-gray-100 shadow flex-row"
-                            >
+                            <Card className="p-4 hover:bg-gray-100 shadow-sm border flex flex-row items-center gap-4 cursor-pointer transition-colors">
                                 <div className="flex-1">{funcionario.nome}
                                     <div className="flex gap-1 items-center">
                                         <UserIcon size={15} className="text-gray-500 " />
@@ -120,7 +118,7 @@ const Funcionario = () => {
                                 </div>
                                 <EyeIcon
                                     size={25}
-                                    className="ml-auto text-gray-500 hover:text-gray-600 transition-colors cursor-pointer"
+                                    className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
                                     onClick={() => handleDialogDetailsOpen(funcionario)}
                                 />
                                 <ConfirmDeleteDialog

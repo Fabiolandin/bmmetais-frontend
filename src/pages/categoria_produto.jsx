@@ -104,9 +104,7 @@ const CategoriaProduto = () => {
                 ) : (
                     listaCategoria.map((categoria) => (
                         <CardContent key={categoria.id}>
-                            <Card
-                                className="p-4 hover:bg-gray-100 shadow flex-row"
-                            >
+                            <Card className="p-4 hover:bg-gray-100 shadow-sm border flex flex-row items-center gap-4 cursor-pointer transition-colors">
                                 {categoria.nome}
                                 <EyeIcon
                                     size={25}

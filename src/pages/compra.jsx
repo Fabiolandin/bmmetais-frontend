@@ -87,7 +87,7 @@ const Compra = () => {
                         const total = compras.items?.reduce((acc, item) => acc + (item.quantidade * item.preco_unitario), 0) ?? 0
                         return (
                             <CardContent key={compras.id}>
-                                <Card className="p-4 hover:bg-gray-50 shadow-sm border flex flex-row items-center gap-4 cursor-pointer transition-colors">
+                                <Card className="p-4 hover:bg-gray-100 shadow-sm border flex flex-row items-center gap-4 cursor-pointer transition-colors">
                                     <div className="font-bold text-blue-600 w-12">#{compras.id}</div>
                                     <div className="flex-1">
                                         <div className="font-medium">{compras.fornecedor?.nome}</div>
@@ -99,7 +99,7 @@ const Compra = () => {
                                     </div>
                                     <div className="flex gap-2">
                                         <EyeIcon
-                                            size={22}
+                                            size={25}
                                             className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
                                             onClick={() => {
                                                 setCompraSelecionada(compras)

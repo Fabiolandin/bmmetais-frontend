@@ -106,9 +106,7 @@ const Cliente = () => {
                 ) : (
                     listaCliente.map((cliente) => (
                         <CardContent key={cliente.id}>
-                            <Card
-                                className="p-4 hover:bg-gray-100 shadow flex-row"
-                            >
+                            <Card className="p-4 hover:bg-gray-100 shadow-sm border flex flex-row items-center gap-4 cursor-pointer transition-colors">
                                 <div className="flex-1">{cliente.nome}
                                     <div className="flex gap-1 items-center">
                                         <UserIcon size={15} className="text-gray-500 " />

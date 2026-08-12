@@ -98,9 +98,7 @@ const Produto = () => {
                 ) : (
                     listaProduto.map((produto) => (
                         <CardContent key={produto.id}>
-                            <Card
-                                className="p-4 hover:bg-gray-100 shadow flex flex-row items-center gap-4"
-                            >
+                            <Card className="p-4 hover:bg-gray-100 shadow-sm border flex flex-row items-center gap-4 cursor-pointer transition-colors">
                                 <div className="flex-1">{produto.nome}
                                     <div className="flex gap-1 items-center">
                                         <BoxIcon size={15} className="text-gray-500 " />
